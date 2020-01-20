@@ -303,4 +303,9 @@ class ProductsController extends Controller
         return redirect()->route('allProducts');
     }
 
+    public function showMenShoesPage()
+    {
+        return "reikia sukurti view";
+    }
+
 }

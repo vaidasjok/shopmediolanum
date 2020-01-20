@@ -63,6 +63,22 @@ Route::get('payment/paymentreceipt/{paymentID}/{payerID}', ['uses' => 'Payment\P
 
 
 
+
+//products dedicated pages
+Route::get('men/shoes', ['uses' => 'ProductsController@showMenShoesPage', 'as' => 'showMenShoesPage']);
+
+Route::get('men/clothing', ['uses' => 'ProductsController@showMenClothingPage', 'as' => 'showMenClothingPage']);
+
+Route::get('men/accessoiries', ['uses' => 'ProductsController@showMenAccessoiriesPage', 'as' => 'showMenAccessoiriesPage']);
+
+Route::get('women/shoes', ['uses' => 'ProductsController@showWomenShoesPage', 'as' => 'showWomenShoesPage']);
+
+Route::get('women/clothing', ['uses' => 'ProductsController@showWomenClothingPage', 'as' => 'showWomenClothingPage']);
+
+Route::get('women/accessoiries', ['uses' => 'ProductsController@showWomenAccessoiriesPage', 'as' => 'showWomenAccessoiriesPage']);
+
+
+
 //user authentication
 Auth::routes();
 
@@ -70,7 +86,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 //ADMIN PANEL
-
+////////////////////////////////////////////////////
 Route::group(['middleware' => ['restrictToAdmin']], function() {
 
 //overview - all products
