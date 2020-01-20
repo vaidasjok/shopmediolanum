@@ -1,0 +1,70 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito);/*@import '~bootstrap/scss/bootstrap';*/
+
+@font-face {
+  font-family: "fontello";
+  src: url("/fonts/fontello.eot");
+  src: url("/fonts/fontello.eot#iefix") format("embedded-opentype"), url("/fonts/fontello.woff") format("woff"), url("/fonts/fontello.ttf") format("truetype"), url("/fonts/fontello.svg#fontello") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.header_top {
+  background-color: transparent;
+  padding-top: 15px;
+}
+
+.ikona {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  line-height: 1;
+}
+
+.ikona:hover {
+  background-color: #222222;
+  color: #fff;
+}
+
+.language-type {
+  color: #000;
+  font-size: 14px;
+  padding: 0;
+}
+
+.language-type a {
+  padding: 11px 7px;
+}
+
+.cart {
+  background-color: transparent;
+  position: relative;
+  margin: 0;
+}
+
+.cart-with-numbers {
+  position: absolute;
+  right: 8px;
+  top: -5px;
+  left: initial;
+  border-radius: 0;
+  border-color: #000;
+  background-color: transparent;
+  color: #222;
+}
+
+.h2_like {
+  padding: 20px 20px 10px;
+  font-weight: bold;
+  display: block;
+}
+
+.h3_like {
+  padding: 10px 20px 5px;
+  font-weight: bold;
+  font-size: 90%;
+  display: block;
+  color: #666;
+}
+
