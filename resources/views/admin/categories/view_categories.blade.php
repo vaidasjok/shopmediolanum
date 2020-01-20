@@ -23,7 +23,7 @@
             <td>{{ $category->name }}</td>
             <td>{{ $category->parent_id }}</td>
             <td>{{ $category->url }}</td>
-            <td class=""><a href="{{ route('editManCategory', ['id' => $category->id]) }}" class="btn btn-primary">Update</a> <a href="{{ route('deleteCategory', ['id' => $category->id]) }}" class="btn btn-danger delete-warning">Delete</a></td>
+            <td class="">@if((strtolower($category->name) != 'shoes') && (strtolower($category->name) != 'accessoiries')&& (strtolower($category->name) != 'clothing'))<a href="{{ route('editManCategory', ['id' => $category->id]) }}" class="btn btn-primary">Update</a> <a href="{{ route('deleteCategory', ['id' => $category->id]) }}" class="btn btn-danger delete-warning">Delete</a>@endif</td>
         </tr>
         @endforeach
     </tbody>

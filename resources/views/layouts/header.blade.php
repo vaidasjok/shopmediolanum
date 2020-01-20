@@ -106,3 +106,4 @@
 				</div>
 			</div>
 		</div><!--/header-middle-->
+		View name: {{$view_name}}

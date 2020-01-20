@@ -32,5 +32,13 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function($view) {
             $view->with('userData', Auth::user());
         });
+
+
+        //show view name vj koregavimas
+        view()->composer('*', function($view){
+            $view_name = str_replace('.', '-', $view->getName());
+            view()->share('view_name', $view_name);
+        });
+
     }
 }

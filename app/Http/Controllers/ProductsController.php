@@ -17,7 +17,22 @@ class ProductsController extends Controller
     
     public function shophome()
     {
-        return view('shophome');
+
+        $active_type = Type::where('is_active', 1)->first();
+        if($active_type->type == 'men') {
+            $categories = Category::with('categories')->where('parent_id', 0)->get();
+        } else {
+            $categories = WomenCategory::with('categories')->where('parent_id', 0)->get();
+        }
+        
+
+        if($active_type->type == 'men') {
+            $products = Product::where('type' ,'men')->paginate(3);
+        } else {
+            $products = Product::where('type', 'women')->paginate(3);
+        }
+        // dd($categories);
+        return view('shophome', compact('products', 'categories'));
     }
 
     
@@ -54,13 +69,13 @@ class ProductsController extends Controller
             $categories = WomenCategory::where('parent_id', 0)->get();
         }
         
-        foreach($categories as $cat) {
-            echo $cat->name; echo "<br>";
-            $sub_categories = Category::where('parent_id', $cat->id)->get();
-            foreach($sub_categories as $subcat) {
-                echo $subcat->name; echo "<br>";
-            }
-        }
+        // foreach($categories as $cat) {
+        //     echo $cat->name; echo "<br>";
+        //     $sub_categories = Category::where('parent_id', $cat->id)->get();
+        //     foreach($sub_categories as $subcat) {
+        //         echo $subcat->name; echo "<br>";
+        //     }
+        // }
 
         if($active_type->type == 'men') {
             $products = Product::where('type' ,'men')->paginate(3);
@@ -68,7 +83,7 @@ class ProductsController extends Controller
             $products = Product::where('type', 'women')->paginate(3);
         }
         
-    	return view('allproducts', compact('products'));
+    	return view('allproducts', compact('products', 'categories'));
     }
 
     
@@ -266,7 +281,12 @@ class ProductsController extends Controller
 
     public function products($url = null)
     {
-        $categoryDetails = Category::where('url', $url)->first();
+        $active_type = Type::where('is_active', 1)->first();
+        if($active_type->type == 'men') {
+            $categoryDetails = Category::where('url', $url)->first();
+        } else {
+            $categoryDetails = WomenCategory::where('url', $url)->first();
+        }
         $products = Product::where('category_id', $categoryDetails
             ->id)->get();
         $categories = Category::with('categories')->where('parent_id', 0)->get();
