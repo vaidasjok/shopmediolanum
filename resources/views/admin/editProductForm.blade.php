@@ -6,7 +6,7 @@
 <div class="table-responsive">
 
     <form action="/admin/updateProduct/{{$product->id}}" method="post">
-
+        <input type="hidden" name="type" value="{{$product->type}}">
         {{csrf_field()}}
 
         <div class="form-group">
@@ -17,7 +17,7 @@
             <label for="description">Description</label>
             <input type="text" class="form-control" name="description" id="description" placeholder="description" value="{{$product->description}}" required>
         </div>
-
+<!-- 
 
         <div class="form-group">
              <label for="type">Type</label>
@@ -26,7 +26,7 @@
                 <option value="{{ $key }}" @if(isset($product)) {{ ($product->type == $type) ? 'selected' : '' }} @endif>{{ $type }}</option>
                 @endforeach
             </select>
-        </div>
+        </div> -->
 
         <div class="form-group">
             <label for="category_id">Category</label>

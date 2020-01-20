@@ -77,7 +77,12 @@ class AdminProductsController extends Controller
     public function editProductForm($id) 
     {
     	$product = Product::find($id);
-        $categories = Category::where('parent_id', 0)->get();
+        $type = $product->type;
+        if($type == 'men') {
+            $categories = Category::where('parent_id', 0)->get();
+        } else {
+            $categories = WomenCategory::where('parent_id', 0)->get();
+        }
         $categories_dropdown = "<option selected disabled>Select</option>";
         $selected = "";
         foreach($categories as $cat) {
@@ -86,7 +91,13 @@ class AdminProductsController extends Controller
             }
             $categories_dropdown .= "<option value = '" . $cat->id . "'" . $selected . " >" . $cat->name . "</option>";
             $selected = '';
-            $sub_categories = Category::where('parent_id', $cat->id)->get();
+
+            if($type == 'men') {
+                $sub_categories = Category::where('parent_id', $cat->id)->get();
+            } else {
+                $sub_categories = WomenCategory::where('parent_id', $cat->id)->get();
+            }
+            // $sub_categories = Category::where('parent_id', $cat->id)->get();
             foreach($sub_categories as $sub_cat) {
                 if($product->category_id == $sub_cat->id) {
                     $selected = "selected";
@@ -157,7 +168,7 @@ class AdminProductsController extends Controller
     public function createProductForm()
     {
         // $categories = Category::all();
-         $active_type = Type::where('is_active', 1)->first();
+        $active_type = Type::where('is_active', 1)->first();
         if($active_type->type == 'men') {
             $categories = Category::where('parent_id', 0)->get();
         } else {
