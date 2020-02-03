@@ -112,7 +112,7 @@ Route::post('admin/updateProductImage/{id}', ['uses' => 'Admin\AdminProductsCont
 
 Route::match(['get', 'post'], 'admin/addProductImagesForm/{id}', ['uses' => 'Admin\AdminProductsController@addProductImagesForm', 'as' => 'addProductImagesForm']);
 
-
+Route::get('admin/delete-product-image/{id}', ['uses' => 'Admin\AdminProductsController@deleteProductImage', 'as' => 'deleteProductImage']);
 
 //update product data
 Route::post('admin/updateProduct/{id}', ['uses' => 'Admin\AdminProductsController@updateProduct', 'as' => 'adminUpdateProduct']);

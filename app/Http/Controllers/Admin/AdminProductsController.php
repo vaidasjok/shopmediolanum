@@ -200,6 +200,32 @@ class AdminProductsController extends Controller
         return view('admin.addProductImagesForm')->with(['product' => $product, 'product_images' => $product_images ]);
     }
 
+    public function deleteProductImage($id) {
+        $image = ProductsImage::findOrFail($id);
+        $product_id = $image->product_id;
+
+        //check if image exist in folder
+        $exists_large = Storage::disk('local')->exists('public/product_images/large/' . $image->image);
+        $exists_medium = Storage::disk('local')->exists('public/product_images/medium/' . $image->image);
+        $exists_small = Storage::disk('local')->exists('public/product_images/small/' . $image->image);
+
+        //delete image from folders
+        if($exists_large) {
+            Storage::delete('public/product_images/large/' . $image->image);
+        }
+        if($exists_medium) {
+            Storage::delete('public/product_images/medium/' . $image->image);
+        }
+        if($exists_small) {
+            Storage::delete('public/product_images/small/' . $image->image);
+        }
+        
+        //delete image from database
+        $image->delete();
+        
+        return redirect('admin/addProductImagesForm/' . $product_id)->withSuccess("Image has been deleted successfully.");
+    }
+
     public function updateProduct(Request $request, $id)
     {
         $name = $request->input('name');

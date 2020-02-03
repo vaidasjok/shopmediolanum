@@ -50,17 +50,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($product->attributes as $attribute)    
+				@foreach($product_images as $image)    
 				<tr>
-					<input type="hidden" name="idAttr[]", value="{{$attribute->id}}">
-					<td>{{ $attribute->id }}</td>
-					<td>{{ $attribute->sku }}</td>
-					<td>{{ $attribute->size }}</td>
-					<td><input type="text" name="price[]" value="{{ $attribute->price }}"></td>
-					<td><input type="text" name="stock[]" value="{{ $attribute->stock }}"></td>
+					<td>{{ $image->id }}</td>
+					<td>{{ $image->product_id }}</td>
+					<td><img src="{{ asset('storage/product_images/small/' . $image->image) }}" alt="" style="max-height: 150px;"></td>
 					<td>
-						<input type="submit" value="Update" class="btn btn-primary btn-mini">
-						<a rel="{{ $attribute->id }}" rel1="delete-attribute" href="javascript:void(0);" class="btn btn-danger deleteRecord">Delete</a>
+						<a rel="{{ $image->id }}" rel1="delete-product-image" href="javascript:void(0);" class="btn btn-danger deleteRecord">Delete</a>
 					</td>
 				</tr>
 				@endforeach

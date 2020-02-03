@@ -10,6 +10,7 @@ use App\Category;
 use App\WomenCategory;
 use App\Type;
 use App\Cart;
+use App\ProductsImage;
 use Session;
 use Illuminate\Support\Fasades\Auth;
 use Illuminate\Support\Str;
@@ -383,8 +384,11 @@ class ProductsController extends Controller
             $categoryDetails = WomenCategory::where('id', $product->category_id)->first();
         }
         $categories = Category::with('categories')->where('parent_id', 0)->get();
+
+        //get product alternate images
+        $productAltImages = ProductsImage::where('product_id', $id)->get();
         
-        return view('products.detail', ['type' => $active_type->type])->with(compact('product', 'categories', 'categoryDetails'));
+        return view('products.detail', ['type' => $active_type->type])->with(compact('product', 'categories', 'categoryDetails', 'productAltImages'));
     }
 
     public function getProductPrice(Request $request)
