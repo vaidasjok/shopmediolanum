@@ -30,3 +30,25 @@ $(document).ready(function () {
         });
     });
 });
+
+$(document).ready(function () {
+    $('#selSize').change(function() {
+        var idSize = $(this).val();
+        if(idSize == "") {
+            return false;
+        }
+        $.ajax({
+            url: '/get-product-price',
+            method: 'get',
+            data: {idSize: idSize},
+            success: function(data, status, xhr) {
+                // alert(data);
+                $('#getPrice').html('€ ' + data);
+            },
+            error: function(error, status, xhr, ) {
+                alert('Error');
+            }
+
+        });
+    });
+});

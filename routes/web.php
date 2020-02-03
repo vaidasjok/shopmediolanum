@@ -14,6 +14,9 @@
 // senesnis shop home
 // Route::get('/', ['uses' => 'ProductsController@index', 'as' => 'allProducts']);
 
+Route::get('set-type/{type}', ['uses' => 'ProductsController@setType', 'as' => 'setType']);
+
+
 //shop home page
 Route::get('/', ['uses' => 'ProductsController@shophome', 'as' => 'shophome']);
 
@@ -27,6 +30,12 @@ Route::get('products/women', ['uses' => 'ProductsController@womenProducts', 'as'
 
 //category page
 Route::get('products/{url}', ['uses' => 'ProductsController@products', 'as' => 'products']);
+
+//product detail page
+Route::get('product/{id}', ['uses' => 'ProductsController@product', 'as' => 'product']);
+
+//get product attribute price
+Route::get('get-product-price', ['uses' => 'ProductsController@getProductPrice', 'as' => 'getProductPrice']);
 
 //search
 Route::get('search', ['uses' => 'ProductsController@search', 'as' => 'searchProducts']);
@@ -100,6 +109,10 @@ Route::get('admin/editProductImageForm/{id}', ['uses' => 'Admin\AdminProductsCon
 
 //update product image
 Route::post('admin/updateProductImage/{id}', ['uses' => 'Admin\AdminProductsController@updateProductImage', 'as' => 'adminUpdateProductImage']);
+
+Route::match(['get', 'post'], 'admin/addProductImagesForm/{id}', ['uses' => 'Admin\AdminProductsController@addProductImagesForm', 'as' => 'addProductImagesForm']);
+
+
 
 //update product data
 Route::post('admin/updateProduct/{id}', ['uses' => 'Admin\AdminProductsController@updateProduct', 'as' => 'adminUpdateProduct']);
@@ -181,7 +194,6 @@ Route::get('admin/get-categories-for-new-product', ['uses' => 'Admin\AdminProduc
 
 
 
-Route::get('set-type/{type}', ['uses' => 'ProductsController@setType', 'as' => 'setType']);
 
 //adding to cart using Ajax post request
 Route::post('products/addToCartAjaxPost', ['uses' => 'ProductsController@addToCartAjaxPost', 'as' => 'addToCartAjaxPost']);
@@ -189,4 +201,6 @@ Route::post('products/addToCartAjaxPost', ['uses' => 'ProductsController@addToCa
 
 //adding to cart using Ajax get request
 Route::get('products/addToCartAjaxGet/{id}', ['uses' => 'ProductsController@addToCartAjaxGet', 'as' => 'addToCartAjaxGet']);
+
+Route::get('{type}/{category_url}', ['uses' => 'ProductsController@showTypeCategoryProducts', 'as' => 'showTypeCategoryProducts']);
 

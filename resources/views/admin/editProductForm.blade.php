@@ -15,8 +15,13 @@
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <input type="text" class="form-control" name="description" id="description" placeholder="description" value="{{$product->description}}" required>
+            <textarea class="form-control" name="description" id="description" placeholder="description" required>{{$product->description}}</textarea>
         </div>
+        <div class="form-group">
+            <label for="description">Size & Fit</label>
+            <textarea class="form-control" name="size_and_fit" id="size_and_fit" placeholder="Size & Fit" required>{{$product->size_and_fit}}</textarea>
+        </div>
+
 <!-- 
 
         <div class="form-group">

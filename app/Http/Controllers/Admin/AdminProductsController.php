@@ -9,6 +9,8 @@ use App\Category;
 use App\WomenCategory;
 use App\Type;
 use App\ProductAttribute;
+use App\ProductsImage;
+use Image;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -31,6 +33,7 @@ class AdminProductsController extends Controller
         $type = $request->input('type');
         $price = $request->input('price');
         $category_id = $request->input('category_id');
+        $size_and_fit = $request->input('size_and_fit');
 
         Validator::make($request->all(), ['image' => 'required|image|mimes:png,jpg,jpeg|max:2000'])->validate(); 
         $ext = $request->file('image')->getClientOriginalExtension(); //jpg
@@ -40,7 +43,7 @@ class AdminProductsController extends Controller
         $imageEncoded = File::get($request->image);
         Storage::disk('local')->put('public/product_images/' . $imageName, $imageEncoded);
 
-        $newProductArray = array('name' => $name, 'description' => $description, 'image' => $imageName, 'type' => $type, 'price' => $price, 'category_id' => $category_id); 
+        $newProductArray = array('name' => $name, 'description' => $description, 'image' => $imageName, 'type' => $type, 'price' => $price, 'category_id' => $category_id, 'size_and_fit' => $size_and_fit); 
         $created = DB::table('products')->insert($newProductArray);
 
         if($created) {
@@ -144,6 +147,59 @@ class AdminProductsController extends Controller
         }
     }
 
+    public function addProductImagesForm(Request $request, $id = null)
+    {
+        
+        $product = Product::findOrFail($id);
+        if($request->isMethod('post')) {
+            $data = $request->all();
+            // echo '<pre>'; print_r($data); die;
+            if($request->hasFile('images')) {
+                $files = $request->file('images');
+                // echo '<pre>'; print_r($files); die;
+                foreach($files as $file) {
+                    // dd($file);
+                    $image = new ProductsImage;
+                    $imageEncoded = File::get($file);
+                    // dd($imageEncoded);
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = rand(111, 99999) . '.' . $extension;
+
+                    $large_image_path = 'public/product_images/large/' . $filename;
+                    $medium_image_path = 'public/product_images/medium/' . $filename;
+                    $small_image_path = 'public/product_images/small/' . $filename;
+
+                    Storage::disk('local')->put($large_image_path, $imageEncoded);
+                    Storage::disk('local')->put($medium_image_path, $imageEncoded);
+                    Storage::disk('local')->put($small_image_path, $imageEncoded);
+
+                    //resize images
+                    // $img_large = Image::make($large_image_path)->save($large_image_path);
+                    $img_medium = Image::make($file)->resize(600, 600, function($constraint) {
+                        $constraint->aspectRatio();
+                    }); 
+                    Storage::disk('local')->put($medium_image_path, $img_medium->encode());
+                    // $img_medium->save(Storage::disk('local')->url('app/' . $medium_image_path));
+
+                    $img_small = Image::make($file)->resize(300, 300, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    Storage::disk('local')->put($small_image_path, $img_small->encode());
+                    // $img_small->save(Storage::disk('local')->url('app/' . $small_image_path));
+
+                    //save to db
+                    $image->image = $filename;
+                    $image->product_id = $data['product_id'];
+                    $image->save();
+                }
+            }
+
+            return redirect('admin/addProductImagesForm/' . $id)->withSuccess("Images have been added successfully.");
+        }
+        $product_images = ProductsImage::where('product_id', $id)->get();
+        return view('admin.addProductImagesForm')->with(['product' => $product, 'product_images' => $product_images ]);
+    }
+
     public function updateProduct(Request $request, $id)
     {
         $name = $request->input('name');
@@ -151,13 +207,15 @@ class AdminProductsController extends Controller
         $type = $request->input('type');
         $price = $request->input('price');
         $category_id = $request->input('category_id');
+        $size_and_fit = $request->input('size_and_fit');
 
         $arrayToUpdate = array(
                             'name' => $name,
                             'description' => $description,
                             'type' => $type,
                             'price' => $price,
-                            'category_id' => $category_id
+                            'category_id' => $category_id,
+                            'size_and_fit' => $size_and_fit
                         );
 
         DB::table('products')->where('id', $id)->update($arrayToUpdate);

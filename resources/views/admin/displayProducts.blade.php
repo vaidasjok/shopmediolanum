@@ -34,7 +34,8 @@
             <td>{{$product['price']}}</td>
             
             <td><a href="{{ route('addAttributes',['id' => $product['id'] ])}}" class="btn btn-primary">Add/Edit Attr</a></td>
-            <td><a href="{{ route('adminEditProductImageForm',['id' => $product['id'] ])}}" class="btn btn-primary">Edit Image</a></td>
+            <td><a href="{{ route('adminEditProductImageForm',['id' => $product['id'] ])}}" class="btn btn-primary" title="Edit Main Image">Edit Main Image</a></td>
+            <td><a href="{{ route('addProductImagesForm',['id' => $product['id'] ])}}" class="btn btn-info btn-mini" title="Add Additional Images">Add Images</a></td>
             <td><a href="{{ route('adminEditProductForm',['id' => $product['id'] ])}}" class="btn btn-primary">Edit</a></td>
             <td><a href="{{route('adminDeleteProduct', ['id' => $product['id']])}}"  class="btn btn-danger delete-warning">Delete</a></td>
 

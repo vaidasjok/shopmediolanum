@@ -28,7 +28,12 @@
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <input type="text" class="form-control" name="description" id="description" placeholder="description" required>
+           <textarea class="form-control" name="description" id="description" placeholder="Description" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Size & Fit</label>
+            <textarea class="form-control" name="size_and_fit" id="size_and_fit" placeholder="Size & Fit" required></textarea>
         </div>
 
         <div class="form-group">
@@ -55,7 +60,7 @@
 
         <div class="form-group">
             <label for="type">Price</label>
-            <input type="text" class="form-control" name="price" id="price" placeholder="price" required>
+            <input type="text" class="form-control" name="price" id="price" placeholder="Price" required>
         </div>
         <button type="submit" name="submit" class="btn btn-primary">Submit</button>
     </form>
