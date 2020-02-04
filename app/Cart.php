@@ -35,7 +35,7 @@ class Cart
 			$productToAdd['quantity']++;
 			$productToAdd['totalSinglePrice'] = $productToAdd['quantity'] * $price;
 
-			// first time to add this productto cart
+		// first time to add this productto cart
 		} else {
 			$productToAdd = ['quantity' => 1, 'totalSinglePrice' => $price, 'data' => $product];
 		}
