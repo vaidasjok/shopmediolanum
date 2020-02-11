@@ -5,7 +5,7 @@
 @include('alert')
 
 <div class="table-responsive">
-    <table class="table table-striped table-responsive">
+    <table id="view_products" class="table table-striped table-responsive display">
         <thead>
         <tr>
             <th>#id</th>
@@ -14,10 +14,7 @@
             <th>Description</th>
             <th>Type</th>
             <th>Price</th>
-            <th>Edit Image</th>
-            <th></th>
             <th>Actions</th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -33,11 +30,11 @@
             <td>{{$product['type']}}</td>
             <td>{{$product['price']}}</td>
             
-            <td><a href="{{ route('addAttributes',['id' => $product['id'] ])}}" class="btn btn-primary">Add/Edit Attr</a></td>
-            <td><a href="{{ route('adminEditProductImageForm',['id' => $product['id'] ])}}" class="btn btn-primary" title="Edit Main Image">Edit Main Image</a></td>
-            <td><a href="{{ route('addProductImagesForm',['id' => $product['id'] ])}}" class="btn btn-info btn-mini" title="Add Additional Images">Add Images</a></td>
-            <td><a href="{{ route('adminEditProductForm',['id' => $product['id'] ])}}" class="btn btn-primary">Edit</a></td>
-            <td><a href="{{route('adminDeleteProduct', ['id' => $product['id']])}}"  class="btn btn-danger delete-warning">Delete</a></td>
+            <td class="center"><a href="{{ route('addAttributes',['id' => $product['id'] ])}}" class="btn btn-primary">Add/Edit Attr</a>
+            <a href="{{ route('adminEditProductImageForm',['id' => $product['id'] ])}}" class="btn btn-primary" title="Edit Main Image">Edit Main Image</a>
+            <a href="{{ route('addProductImagesForm',['id' => $product['id'] ])}}" class="btn btn-info btn-mini" title="Add Additional Images">Add Images</a>
+            <a href="{{ route('adminEditProductForm',['id' => $product['id'] ])}}" class="btn btn-primary">Edit</a>
+            <a href="{{route('adminDeleteProduct', ['id' => $product['id']])}}"  class="btn btn-danger delete-warning">Delete</a></td>
 
 
         </tr>
@@ -50,8 +47,19 @@
 
         </tbody>
     </table>
-    {{$products->links()}}
     
 
 </div>
+
+<script>
+    $(document).ready( function () {
+        $('#view_products').DataTable({
+            'paging': true,
+            'pageLength': 10,
+            'lengthChange': false,
+        });
+    } );
+</script>
+
+
 @endsection

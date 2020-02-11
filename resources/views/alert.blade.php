@@ -5,3 +5,7 @@
 @if(session('danger'))
 <div class="alert alert-danger">{{session('danger')}}</div>
 @endif
+
+@if(session('error'))
+<div class="alert alert-danger">{{session('error')}}</div>
+@endif

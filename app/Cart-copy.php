@@ -26,37 +26,37 @@ class Cart
 		}
 	}
 
-	public function addItem($attribute_id, $product, $price = null, $size = null) 
+	public function addItem($id, $product) 
 	{
-		// $price = (int) str_replace('€', '', $product->price);
+		$price = (int) str_replace('€', '', $product->price);
 		// the item already exists
-		if(array_key_exists($attribute_id, $this->items)) {
-			$productToAdd = $this->items[$attribute_id];
+		if(array_key_exists($id, $this->items)) {
+			$productToAdd = $this->items[$id];
 			$productToAdd['quantity']++;
 			$productToAdd['totalSinglePrice'] = $productToAdd['quantity'] * $price;
 
 		// first time to add this productto cart
 		} else {
-			$productToAdd = ['quantity' => 1, 'totalSinglePrice' => $price, 'data' => $product, 'size' => $size, 'price' => $price, 'attribute_id' => $attribute_id];
+			$productToAdd = ['quantity' => 1, 'totalSinglePrice' => $price, 'data' => $product];
 		}
 
-		$this->items[$attribute_id] = $productToAdd;
+		$this->items[$id] = $productToAdd;
 		$this->totalQuantity++;
 		$this->totalPrice = $this->totalPrice + $price;
 	}
 
-	public function removeItem($attribute_id) 
+	public function removeItem($id) 
 	{
 		//paimu viena konkretu produkta is atminties
-		$singlePproductToRemove = $this->items[$attribute_id];
+		$singlePproductToRemove = $this->items[$id];
 
 		//mazinu vieno paimto konkretaus produkto kieki ir suma
 		if($singlePproductToRemove['quantity'] > 1) {
 			$singlePproductToRemove['quantity']--;
 		
-			$singlePproductToRemove['totalSinglePrice'] = $singlePproductToRemove['quantity'] * $singlePproductToRemove['price'];
+			$singlePproductToRemove['totalSinglePrice'] = $singlePproductToRemove['quantity'] * $singlePproductToRemove['data']['price'];
 			//grazina koreguotus produkto duomenis atgal i atminti
-			$this->items[$attribute_id] = $singlePproductToRemove;
+			$this->items[$id] = $singlePproductToRemove;
 
 
 			//bendru kiekiu mazinimas

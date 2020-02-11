@@ -132,30 +132,5 @@
 		</div>
 	</section>
 
-	<script>
-		$(document).ready(function() {
-			$('.ajaxGET').click(function(e) {
-				e.preventDefault();
-				var url = $(this).find('.url').text();
-				var _token = $("input[name = '_token']").val();
-
-				$.ajax({
-					method: "GET",
-					url: url,
-					data: {_token: _token},
-					success: function(data, status, XHR) {
-						// alert(data.totalQuantity);
-						if(data.totalQuantity > 0) {
-							$('#totalQuantity').text(data.totalQuantity);
-						}
-					},
-					error: function(error, status, xhr) {
-						alert(error);
-					}
-				});
-			});
-		});
-	</script>
-
 	
 @endsection

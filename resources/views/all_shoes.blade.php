@@ -86,7 +86,9 @@
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Features Items</h2>
-						@foreach($products as $product)
+						@foreach($products->chunk(3) as $chunks)
+						<div class="row">
+						@foreach($chunks as $product)
 							
 							<div class="col-sm-4">
 							<div class="product-image-wrapper">
@@ -119,43 +121,22 @@
 						</div>
 
 						@endforeach
+						</div>
+						@endforeach
 
 					</div><!--features_items-->
-					<ul class="pagination">
+					{{ $products->links() }}
+					<!-- <ul class="pagination">
 						<li class="active"><a href="">1</a></li>
 						<li><a href="">2</a></li>
 						<li><a href="">3</a></li>
 						<li><a href="">&raquo;</a></li>
-					</ul>
+					</ul> -->
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<script>
-		$(document).ready(function() {
-			$('.ajaxGET').click(function(e) {
-				e.preventDefault();
-				var url = $(this).find('.url').text();
-				var _token = $("input[name = '_token']").val();
-
-				$.ajax({
-					method: "GET",
-					url: url,
-					data: {_token: _token},
-					success: function(data, status, XHR) {
-						// alert(data.totalQuantity);
-						if(data.totalQuantity > 0) {
-							$('#totalQuantity').text(data.totalQuantity);
-						}
-					},
-					error: function(xhr, status, error) {
-						alert(error);
-					}
-				});
-			});
-		});
-	</script>
 
 	
 @endsection

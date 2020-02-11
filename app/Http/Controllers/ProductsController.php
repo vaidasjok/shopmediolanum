@@ -11,6 +11,7 @@ use App\WomenCategory;
 use App\Type;
 use App\Cart;
 use App\ProductsImage;
+use App\Coupon;
 use Session;
 use Illuminate\Support\Fasades\Auth;
 use Illuminate\Support\Str;
@@ -30,9 +31,9 @@ class ProductsController extends Controller
         
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->paginate(3);
+            $products = Product::where('type' ,'men')->where('enabled', 1)->paginate(3);
         } else {
-            $products = Product::where('type', 'women')->paginate(3);
+            $products = Product::where('type', 'women')->where('enabled', 1)->paginate(3);
         }
         // dd($categories);
         $type = $active_type->type;
@@ -51,9 +52,9 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $shoe_categories_ids)->paginate(3);
+            $products = Product::where('type' ,'men')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(12);
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $shoe_categories_ids)->paginate(3);
+            $products = Product::where('type', 'women')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(12);
         }
         $type = $active_type->type;
         return view('all_shoes', compact('products', 'categories', 'type'));
@@ -72,9 +73,9 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $shoe_categories_ids)->paginate(3);
+            $products = Product::where('type' ,'men')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(3);
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $shoe_categories_ids)->paginate(3);
+            $products = Product::where('type', 'women')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(3);
         }
         $type = $active_type->type;
         return view('all_shoes', compact('products', 'categories', 'type'));
@@ -104,9 +105,9 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->where('category_id', $category_id)->paginate(3);
+            $products = Product::where('type' ,'men')->where('category_id', $category_id)->where('enabled', 1)->paginate(3);
         } else {
-            $products = Product::where('type', 'women')->where('category_id', $category_id)->paginate(3);
+            $products = Product::where('type', 'women')->where('category_id', $category_id)->where('enabled', 1)->paginate(3);
         }
         $type = $active_type->type;
         return view('type_category_products', compact('products', 'categories', 'type'));
@@ -153,9 +154,9 @@ class ProductsController extends Controller
         // }
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->paginate(3);
+            $products = Product::where('type' ,'men')->where('enabled', 1)->paginate(3);
         } else {
-            $products = Product::where('type', 'women')->paginate(3);
+            $products = Product::where('type', 'women')->where('enabled', 1)->paginate(3);
         }
         
     	return view('allproducts', compact('products', 'categories'));
@@ -165,14 +166,14 @@ class ProductsController extends Controller
 
     public function menProducts()
     {
-        $products = DB::table('products')->where('type', '=', 'men')->get();
+        $products = DB::table('products')->where('type', '=', 'men')->where('enabled', 1)->get();
 
         return view('menProducts', compact('products'));
     }
 
     public function womenProducts()
     {
-        $products = DB::table('products')->where('type', '=', 'women')->get();
+        $products = DB::table('products')->where('type', '=', 'women')->where('enabled', 1)->get();
         
         return view('womenProducts', compact('products'));
     }
@@ -273,25 +274,30 @@ class ProductsController extends Controller
         }
     }
 
-    public function increaseSingleProduct(Request $request, $id) 
+    public function increaseSingleProduct(Request $request, $attribute_id) 
     {
         $prevCart = $request->session()->get('cart');
         $cart = new Cart($prevCart);
 
-        $product = Product::find($id);
-        $cart->addItem($id, $product);
+        $attribute = ProductAttribute::where('id', $attribute_id)->first();
+        $prodId = $attribute->product_id;
+        $product = Product::find($prodId);
+        //reikia gauti price ir size
+        $price = $attribute->price;
+        $size = $attribute->size;
+        $cart->addItem($attribute_id, $product, $price, $size);
         $request->session()->put('cart', $cart);
         // dump($cart);
 
         return redirect()->route('cartProducts');
     }
 
-    public function decreaseSingleProduct(Request $request, $id) 
+    public function decreaseSingleProduct(Request $request, $attribute_id) 
     {
         $prevCart = $request->session()->get('cart');
         $cart = new Cart($prevCart);
 
-        $cart->removeItem($id);
+        $cart->removeItem($attribute_id);
         $request->session()->put('cart', $cart);
         // dump($cart);
         
@@ -328,6 +334,7 @@ class ProductsController extends Controller
         }
     }
 
+    //example purposes only
     public function addToCartAjaxPost(Request $request)
     {
         $id = $request->input('id');
@@ -342,13 +349,41 @@ class ProductsController extends Controller
         return response()->json([ 'totalQuantity' => $cart->totalQuantity ]);
     }
 
-    public function addToCartAjaxGet(Request $request, $id)
+    //actually used
+    public function addToCartAjaxPostTwo(Request $request)
+    {
+        $selSize = $request->input('selSize');
+
+        $attr = explode('-', $selSize);
+        // dd($attr);
+        $attribute_id = $attr[2];
+        $product_id = $attr[0];
+
+        $prevCart = $request->session()->get('cart');
+        $cart = new Cart($prevCart);
+
+        $product = Product::find($product_id);
+        $attribute = ProductAttribute::where('id', $attribute_id)->first();
+        
+        $price = $attribute->price;
+        $size = $attribute->size;
+        $cart->addItem($attribute_id, $product, $price, $size);
+        $request->session()->put('cart', $cart);
+        // dump($cart);
+        return response()->json([ 'totalQuantity' => $cart->totalQuantity ]); 
+    }
+
+    //disabled
+    public function addToCartAjaxGet(Request $request, $attribute_id, $product_id)
     {
         $prevCart = $request->session()->get('cart');
         $cart = new Cart($prevCart);
 
-        $product = Product::find($id);
-        $cart->addItem($id, $product);
+        $product = Product::find($product_id);
+        $attribute = ProductAttribute::where($attribute_id)->first();
+        $price = $attribute->price;
+        $size = $attribute->size;
+        $cart->addItem($attribute_id, $product, $price, $size);
         $request->session()->put('cart', $cart);
         // dump($cart);
         return response()->json([ 'totalQuantity' => $cart->totalQuantity ]); 
@@ -363,7 +398,7 @@ class ProductsController extends Controller
             $categoryDetails = WomenCategory::where('url', $url)->first();
         }
         $products = Product::where('category_id', $categoryDetails
-            ->id)->get();
+            ->id)->where('enabled', 1)->get();
         $categories = Category::with('categories')->where('parent_id', 0)->get();
         // echo '<pre>'; print_r($categories); die;
         //dd($products);
@@ -372,10 +407,18 @@ class ProductsController extends Controller
 
     public function product($id = null)
     {
+        $productsCount = Product::where('id', $id)->where('enabled', 1)->count();
+        if($productsCount == 0) {
+            abort(404);
+        }
+
         $product = Product::with('attributes')->where('id', $id)->first();
 
         // $product = json_decode(json_encode($product));
         // print '<pre>'; print_r($product); die;
+
+        $relatedProducts = Product::where('category_id', $product->category_id)->where('id', "<>", $product->id)->where('enabled', 1)->get();
+        // dd($relatedProducts);
 
         $active_type = Type::where('is_active', 1)->first();
         if($active_type->type == 'men') {
@@ -387,8 +430,10 @@ class ProductsController extends Controller
 
         //get product alternate images
         $productAltImages = ProductsImage::where('product_id', $id)->get();
+
+        $total_stock = ProductAttribute::where('product_id', $id)->sum('stock');   
         
-        return view('products.detail', ['type' => $active_type->type])->with(compact('product', 'categories', 'categoryDetails', 'productAltImages'));
+        return view('products.detail', ['type' => $active_type->type])->with(compact('product', 'categories', 'categoryDetails', 'productAltImages', 'total_stock', 'relatedProducts'));
     }
 
     public function getProductPrice(Request $request)
@@ -397,7 +442,9 @@ class ProductsController extends Controller
         // echo '<pre>'; print_r($idSize); die;
         $proArr = explode('-', $idSize);
         $proAttr = ProductAttribute::where(['product_id' => $proArr[0], 'size' => $proArr[1]])->first();
-        echo $proAttr->price; die;
+        echo $proAttr->price;
+        echo '#';
+        echo $proAttr->stock;
     }
 
     public function setType($type)
@@ -413,6 +460,17 @@ class ProductsController extends Controller
         
     }
 
+    public function applyCoupon(Request $request)
+    {
+        $data = $request->all();
+        // echo '<pre>'; print_r($data); die;
+        $couponCount = Coupon::where('coupon_code', $data['coupon_code'])->count();
+        if($couponCount == 0) {
+            return redirect()->back()->withError('Coupon is not walid.');
+        } else {
+            
+        }
 
+    }
 
 }

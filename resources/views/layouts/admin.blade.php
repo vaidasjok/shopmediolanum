@@ -17,6 +17,7 @@
     <!-- Custom styles for this template -->
     <link href="{{asset ('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{asset ('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
   
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
@@ -67,6 +68,10 @@
                 <li class="{{ (request()->is('admin/add-category')) ? 'active' : '' }}"><a href="/admin/add-category">Add New Men Category</a></li>
                 <li class="{{ (request()->is('admin/view-categories')) ? 'active' : '' }}"><a href="/admin/view-categories">View Men Categories</a></li>
                 <hr>
+                <div class="h2_like" style="">COUPONS</div>
+                <li class="{{ (request()->is('admin/add-coupon')) ? 'active' : '' }}"><a href="{{route('addCoupon')}}">Add Coupon</a></li>
+                <li class="{{ (request()->is('admin/view-coupons')) ? 'active' : '' }}"><a href="{{route('viewCoupons')}}">View Coupons</a></li>
+                <hr>
                 <div class="h2_like" style="">ORDERS</div>
                 <li class="{{ (request()->is('admin/ordersPanel')) ? 'active' : '' }}"><a href="{{route('ordersPanel')}}">View Orders</a></li>
             </ul>
@@ -78,7 +83,7 @@
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">Dashboard</h1>
+            <!-- <h1 class="page-header">Dashboard</h1> -->
 
             @yield('body')
 
@@ -94,6 +99,7 @@
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
 <script src="{{asset ('js/bootstrap.min.js') }}" ></script>
 <script src="{{asset ('js/admin.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </body>
 </html>

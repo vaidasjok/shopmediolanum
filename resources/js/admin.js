@@ -15,4 +15,7 @@ $(document).ready(function() {
 			}
 		});
 	}));
+
+
+	$( "#expiry_date" ).datepicker({minDate: 0, dateFormat: "yy-mm-dd"});
 });

@@ -44,6 +44,10 @@
             <label for="price">Price</label>
             <input type="text" class="form-control" name="price" id="price" placeholder="price" value="{{$product->price}}" required>
         </div>
+        <div class="form-group">
+            <label for="enabled">Enable</label>
+            <input type="checkbox" class="form-check form-check-inline" name="enabled" id="enabled" @if($product->enabled) checked @endif value="1" >
+        </div>
         <button type="submit" name="submit" class="btn btn-primary">Submit</button>
     </form>
 

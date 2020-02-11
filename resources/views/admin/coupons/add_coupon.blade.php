@@ -16,55 +16,34 @@
     @endif
 
 
-    <h2>Create New Product</h2>
+    <h2>Add New Coupon</h2>
 
-    <form action="/admin/sendCreateProductForm" method="post" enctype="multipart/form-data">
+    <form action="/admin/add-coupon" method="post" name="add_coupon" id="add_coupon">
 
         {{csrf_field()}}
 
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" name="name" id="name" placeholder="Product Name" required>
+            <label for="coupon_code">Coupon Code</label>
+            <input type="text" class="form-control" name="coupon_code" id="coupon_code" placeholder="Coupon Code" required minLength="5" maxLength="15" >
         </div>
         <div class="form-group">
-            <label for="description">Description</label>
-           <textarea class="form-control" name="description" id="description" placeholder="Description" required></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="description">Size & Fit</label>
-            <textarea class="form-control" name="size_and_fit" id="size_and_fit" placeholder="Size & Fit" required></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="image">Image</label>
-            <input type="file" class=""  name="image" id="image" required>
+            <label for="amount">Amount</label>
+            <input type="number" class="form-control" name="amount" id="amount" placeholder="Amount" required min="0" autocomplete="off" >
         </div>
         <div class="form-group">
-            <label for="type">Type</label>
-            <select class="form-control" name="type" id="type" required>
-                <option value="">-- Select Type</option>
-                @foreach(Config::get('settings.types') as $key => $type)
-                <option value="{{ $key }}">{{ $type }}</option>
-                @endforeach
+            <label for="amount_type">Amount Type</label>
+            <select name="amount_type" class="form-control" id="amount_type">
+            	<option value="Percentage">Percentage</option>
+            	<option value="Fixed">Fixed</option>
             </select>
         </div>
-
         <div class="form-group">
-            <label for="type">Category</label>
-            <select name="category_id" id="category_id" class="form-control">
-                <?php //echo $categories_dropdown; ?>
-                
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="type">Price</label>
-            <input type="text" class="form-control" name="price" id="price" placeholder="Price" required>
+            <label for="expiry_date">Expiry Date</label>
+            <input type="text" class="form-control" name="expiry_date" id="expiry_date" placeholder="Expiry Date" required autocomplete="off" >
         </div>
         <div class="form-group">
-            <label for="enabled">Enable</label>
-            <input type="checkbox" class="form-check form-check-inline" name="enabled" id="enabled" value="1">
+            <label for="status">Enable</label>
+            <input type="checkbox" class="form-check form-check-inline" name="status" id="status" value="1">
         </div>
         <button type="submit" name="submit" class="btn btn-primary">Submit</button>
     </form>

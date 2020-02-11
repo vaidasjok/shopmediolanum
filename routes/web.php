@@ -18,7 +18,7 @@ Route::get('set-type/{type}', ['uses' => 'ProductsController@setType', 'as' => '
 
 
 //shop home page
-Route::get('/', ['uses' => 'ProductsController@shophome', 'as' => 'shophome']);
+Route::get('/', ['uses' => 'PagesController@front', 'as' => 'front']);
 
 Route::get('products', ['uses' => 'ProductsController@index', 'as' => 'allProducts']);
 
@@ -30,6 +30,9 @@ Route::get('products/women', ['uses' => 'ProductsController@womenProducts', 'as'
 
 //category page
 Route::get('products/{url}', ['uses' => 'ProductsController@products', 'as' => 'products']);
+
+//checkout products
+Route::get('product/checkoutProducts', ['uses' => 'ProductsController@checkoutProducts', 'as' => 'checkoutProducts']);
 
 //product detail page
 Route::get('product/{id}', ['uses' => 'ProductsController@product', 'as' => 'product']);
@@ -53,10 +56,11 @@ Route::get('product/increaseSingleProduct/{id}', ['uses' => 'ProductsController@
 
 
 //decrease single product
-Route::get('product/decreaseSingleProduct/{id}', ['uses' => 'ProductsController@decreaseSingleProduct', 'as' => 'decreaseSingleProduct']);
+Route::get('product/decreaseSingleProduct/{attribute_id}', ['uses' => 'ProductsController@decreaseSingleProduct', 'as' => 'decreaseSingleProduct']);
 
-//checkout products
-Route::get('product/checkoutProducts', ['uses' => 'ProductsController@checkoutProducts', 'as' => 'checkoutProducts']);
+// apply coupon
+Route::post('/cart/apply-coupon', ['uses' => 'ProductsController@applyCoupon', 'as' => 'applyCoupon']);
+
 
 //process checkout page 
 Route::post('product/createNewOrder', ['uses' => 'Payment\PaymentsController@createNewOrder', 'as' => 'createNewOrder']);
@@ -170,7 +174,7 @@ Route::match(['get', 'post'], '/admin/edit-attributes/{id}', ['uses' => 'Admin\A
 
 Route::get('admin/nustatymai', function() {
 
-
+Session::flush();
 	// $type = new \App\Type;
 	// $type->type = 'men';
 	// $type->is_active = 1;
@@ -186,6 +190,13 @@ Route::get('admin/nustatymai', function() {
 //get categories with ajax when creating new product
 Route::get('admin/get-categories-for-new-product', ['uses' => 'Admin\AdminProductsController@getCategoriesForNewProduct', 'as' => 'getCategoriesForNewProduct']);
 
+Route::match(['get', 'post'], 'admin/add-coupon', ['uses' => 'Admin\CouponsController@addCoupon', 'as' => 'addCoupon']);
+
+Route::get('admin/view-coupons', ['uses' => 'Admin\CouponsController@viewCoupons', 'as' => 'viewCoupons']);
+
+Route::get('admin/delete-coupon/{id}', ['uses' => 'Admin\CouponsController@deleteCoupon', 'as' => 'deleteCoupon']);
+
+Route::match(['get', 'post'], 'admin/edit-coupon/{id}', ['uses' => 'Admin\CouponsController@editCoupon', 'as' => 'editCoupon']);
 
 
 }); //end Route::group
@@ -194,10 +205,12 @@ Route::get('admin/get-categories-for-new-product', ['uses' => 'Admin\AdminProduc
 
 
 
-
-//adding to cart using Ajax post request
+ 
+//adding to cart using Ajax post request (example)
 Route::post('products/addToCartAjaxPost', ['uses' => 'ProductsController@addToCartAjaxPost', 'as' => 'addToCartAjaxPost']);
 
+//actually used
+Route::post('products/addToCartAjaxPostTwo', ['uses' => 'ProductsController@addToCartAjaxPostTwo', 'as' => 'addToCartAjaxPostTwo']);
 
 //adding to cart using Ajax get request
 Route::get('products/addToCartAjaxGet/{id}', ['uses' => 'ProductsController@addToCartAjaxGet', 'as' => 'addToCartAjaxGet']);

@@ -31,6 +31,7 @@ $(document).ready(function () {
     });
 });
 
+
 $(document).ready(function () {
     $('#selSize').change(function() {
         var idSize = $(this).val();
@@ -42,8 +43,16 @@ $(document).ready(function () {
             method: 'get',
             data: {idSize: idSize},
             success: function(data, status, xhr) {
-                // alert(data);
-                $('#getPrice').html('€ ' + data);
+                // alert(data); return false;
+                var arr = data.split('#');
+                $('#getPrice').html('€ ' + arr[0]);
+                if(arr[1] == 0) {
+                    $('#availability').text('Out Of Stock');
+                    $('#cartButton').hide();
+                } else {
+                    $('#availability').text('In Stock');
+                    $('#cartButton').show();
+                }
             },
             error: function(error, status, xhr, ) {
                 alert('Error');
@@ -51,6 +60,56 @@ $(document).ready(function () {
 
         });
     });
+
+    //add product to cart
+    $(document).ready(function() {
+        $('.ajaxGET').click(function(e) {
+            e.preventDefault();
+            var url = $(this).find('.url').text();
+            var _token = $("input[name = '_token']").val();
+
+            $.ajax({
+                method: "GET",
+                url: url,
+                data: {_token: _token},
+                success: function(data, status, XHR) {
+                    // alert(data.totalQuantity);
+                    if(data.totalQuantity > 0) {
+                        $('#totalQuantity').text(data.totalQuantity);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert(error);
+                }
+            });
+        });
+    });
+
+    //add product to cart
+    $(document).ready(function() {
+        $('.ajaxPOST').click(function(e) {
+            e.preventDefault();
+            var url = '/products/addToCartAjaxPostTwo';
+            var _token = $("input[name = '_token']").val();
+            var selSize = $('#selSize').val();
+            
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: {_token: _token, selSize: selSize},
+                success: function(data, status, XHR) {
+                    // alert(data.totalQuantity);
+                    if(data.totalQuantity > 0) {
+                        $('#totalQuantity').text(data.totalQuantity);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert(error);
+                }
+            });
+        });
+    });
+
 
     //update main image with alternate image on product (detail view) page
     $('.changeImage').click(function() {

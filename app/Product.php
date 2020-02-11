@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-    	'name', 'description', 'image', 'price', 'type', 'category_id', 'size_and_fit'
+    	'name', 'description', 'image', 'price', 'type', 'category_id', 'size_and_fit', 'enabled'
     ];
 
     public function getPriceAttribute($value) {

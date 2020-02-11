@@ -21,7 +21,7 @@ class AdminProductsController extends Controller
 {
     public function index() 
     {
-    	$products = Product::paginate(3);
+    	$products = Product::get();
     	return view('admin.displayProducts', ['products' => $products]);
     }
 
@@ -34,6 +34,12 @@ class AdminProductsController extends Controller
         $price = $request->input('price');
         $category_id = $request->input('category_id');
         $size_and_fit = $request->input('size_and_fit');
+        if(empty($request->input('enabled'))) {
+            $enabled = 0;
+        } else {
+            $enabled = 1;
+        }
+        
 
         Validator::make($request->all(), ['image' => 'required|image|mimes:png,jpg,jpeg|max:2000'])->validate(); 
         $ext = $request->file('image')->getClientOriginalExtension(); //jpg
@@ -43,7 +49,7 @@ class AdminProductsController extends Controller
         $imageEncoded = File::get($request->image);
         Storage::disk('local')->put('public/product_images/' . $imageName, $imageEncoded);
 
-        $newProductArray = array('name' => $name, 'description' => $description, 'image' => $imageName, 'type' => $type, 'price' => $price, 'category_id' => $category_id, 'size_and_fit' => $size_and_fit); 
+        $newProductArray = array('name' => $name, 'description' => $description, 'image' => $imageName, 'type' => $type, 'price' => $price, 'category_id' => $category_id, 'size_and_fit' => $size_and_fit, 'enabled' => $enabled ); 
         $created = DB::table('products')->insert($newProductArray);
 
         if($created) {
@@ -234,6 +240,11 @@ class AdminProductsController extends Controller
         $price = $request->input('price');
         $category_id = $request->input('category_id');
         $size_and_fit = $request->input('size_and_fit');
+        if(empty($request->input('enabled'))) {
+            $enabled = 0;
+        } else {
+            $enabled = 1;
+        }
 
         $arrayToUpdate = array(
                             'name' => $name,
@@ -241,7 +252,8 @@ class AdminProductsController extends Controller
                             'type' => $type,
                             'price' => $price,
                             'category_id' => $category_id,
-                            'size_and_fit' => $size_and_fit
+                            'size_and_fit' => $size_and_fit,
+                            'enabled' => $enabled
                         );
 
         DB::table('products')->where('id', $id)->update($arrayToUpdate);
