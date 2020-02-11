@@ -49,7 +49,7 @@
 							</div>
 						</td>
 						<td class="cart_total">
-							<p class="cart_total_price">{{$item['totalSinglePrice']}}</p>
+							<p class="cart_total_price">{{number_format($item['totalSinglePrice'], 2)}}</p>
 						</td>
 						<td class="cart_delete">
 							<a class="cart_quantity_delete" href="{{route('deleteItemFromCart', [ 'attribute_id' => $item['attribute_id'] ])}}"><i class="fa fa-times"></i></a>
@@ -88,7 +88,13 @@
 					<ul>
 						<li>Quantity <span>{{$cartItems->totalQuantity}}</span></li>
 						<li>Shipping Cost <span>Free</span></li>
-						<li>Total <span>{{$cartItems->totalPrice}}</span></li>
+						@if(!empty(Session::get('couponAmount')))
+							<li>Subtotal <span>{{number_format($cartItems->totalPrice, 2)}}</span></li>
+							<li>Discount <span>-{{number_format(Session::get('couponAmount'), 2)}}</span></li>
+							<li>Total <span>{{number_format($cartItems->totalPrice - Session::get('couponAmount'), 2)}}</span></li>
+						@else
+							<li>Total <span>{{$cartItems->totalPrice}}</span></li>
+						@endif
 					</ul>
 						<a class="btn btn-default update" href="">Update</a>
 						<a class="btn btn-default check_out" href="{{route('checkoutProducts')}}">Check Out</a>

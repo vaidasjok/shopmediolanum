@@ -462,13 +462,42 @@ class ProductsController extends Controller
 
     public function applyCoupon(Request $request)
     {
+        Session::forget('couponAmount');
+        Session::forget('couponCode');
+
         $data = $request->all();
         // echo '<pre>'; print_r($data); die;
         $couponCount = Coupon::where('coupon_code', $data['coupon_code'])->count();
         if($couponCount == 0) {
             return redirect()->back()->withError('Coupon is not walid.');
         } else {
-            
+            $coupon = Coupon::where('coupon_code', $data['coupon_code'])->first();
+
+            if($coupon->status == 0) {
+                return redirect()->back()->withError('This coupon is not active!');
+            }
+
+            $expiry_date = $coupon->expiry_date;
+            $current_date = date('Y-m-d');
+            // echo $current_date; die;
+            if($expiry_date < $current_date) {
+                return redirect()->back()->withError('This coupon has expired.');
+            }
+
+            // get total amoount of the cart
+            $total_amount = Session::get('cart')->totalPrice;
+            // echo $total_amount; die;
+            if($coupon->amount_type == "Fixed") {
+                $couponAmount = $coupon->amount;
+            } else {
+                $couponAmount = $total_amount * ($coupon->amount / 100);
+            }
+
+            //add coupon code & amount in session
+            Session::put('couponAmount', $couponAmount);
+            Session::put('couponCode', $data['coupon_code']);
+
+            return redirect()->back()->withSuccess('Coupon code successfully applied.');
         }
 
     }
