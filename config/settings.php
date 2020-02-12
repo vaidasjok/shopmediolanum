@@ -18,6 +18,12 @@ return [
         'men' => 'men',
         'women' => 'women',
     ],
+    'frontend_image_types' => [
+        'one' => 'one',
+        'two_one' => 'two_one',
+        'two_two' => 'two_two',
+        'three' => 'three'
+    ]
 
 
 ];

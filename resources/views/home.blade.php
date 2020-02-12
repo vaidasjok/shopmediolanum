@@ -19,7 +19,7 @@
                     <p>Name: {!! Auth::user()->name !!}</p>
                     <p>Email: {!! Auth::user()->email !!}</p>
 
-                    <a href="{{route('allProducts')}}"  class="btn btn-warning">Main Website</a>
+                    <a href="{{url('/')}}"  class="btn btn-warning">Main Website</a>
                     @if($userData->isAdmin())
                         <a href="{{route('adminDisplayProducts')}}"  class="btn btn-primary">Admin Dashboard</a>
                     @endif

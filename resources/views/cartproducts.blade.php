@@ -90,7 +90,7 @@
 						<li>Shipping Cost <span>Free</span></li>
 						@if(!empty(Session::get('couponAmount')))
 							<li>Subtotal <span>{{number_format($cartItems->totalPrice, 2)}}</span></li>
-							<li>Discount <span>-{{number_format(Session::get('couponAmount'), 2)}}</span></li>
+							<li>Coupon Discount <span>-{{number_format(Session::get('couponAmount'), 2)}}</span></li>
 							<li>Total <span>{{number_format($cartItems->totalPrice - Session::get('couponAmount'), 2)}}</span></li>
 						@else
 							<li>Total <span>{{$cartItems->totalPrice}}</span></li>

@@ -74,6 +74,11 @@
                 <hr>
                 <div class="h2_like" style="">ORDERS</div>
                 <li class="{{ (request()->is('admin/ordersPanel')) ? 'active' : '' }}"><a href="{{route('ordersPanel')}}">View Orders</a></li>
+                <hr>
+                <div class="h2_like" style="">FRONT PAGE IMAGES</div>
+                <li class="{{ (request()->is('admin/frontend-images')) ? 'active' : '' }}"><a href="{{route('frontend_add_image')}}">View/Add Images</a></li>
+
+                
             </ul>
             <ul class="nav nav-sidebar">
 

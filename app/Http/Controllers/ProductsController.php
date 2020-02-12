@@ -212,6 +212,10 @@ class ProductsController extends Controller
     }
 
     public function deleteItemFromCart(Request $request, $id) {
+        
+        Session::forget('couponAmount');
+        Session::forget('couponCode');
+
         $cart = $request->session()->get('cart');
         if(array_key_exists($id, $cart->items)) {
             unset($cart->items[$id]);
@@ -276,6 +280,9 @@ class ProductsController extends Controller
 
     public function increaseSingleProduct(Request $request, $attribute_id) 
     {
+        Session::forget('couponAmount');
+        Session::forget('couponCode');
+
         $prevCart = $request->session()->get('cart');
         $cart = new Cart($prevCart);
 
@@ -294,6 +301,9 @@ class ProductsController extends Controller
 
     public function decreaseSingleProduct(Request $request, $attribute_id) 
     {
+        Session::forget('couponAmount');
+        Session::forget('couponCode');
+
         $prevCart = $request->session()->get('cart');
         $cart = new Cart($prevCart);
 
@@ -352,6 +362,9 @@ class ProductsController extends Controller
     //actually used
     public function addToCartAjaxPostTwo(Request $request)
     {
+        Session::forget('couponAmount');
+        Session::forget('couponCode');
+
         $selSize = $request->input('selSize');
 
         $attr = explode('-', $selSize);

@@ -199,6 +199,13 @@ Route::get('admin/delete-coupon/{id}', ['uses' => 'Admin\CouponsController@delet
 Route::match(['get', 'post'], 'admin/edit-coupon/{id}', ['uses' => 'Admin\CouponsController@editCoupon', 'as' => 'editCoupon']);
 
 
+Route::match(['get', 'post'], '/admin/frontend-images', ['uses' => 'Admin\FrontendImagesController@frontend_add_image', 'as' => 'frontend_add_image']);
+
+Route::get('admin/delete-image/{id}', ['uses' => 'Admin\FrontendImagesController@frontend_delete_image', 'as' => 'frontend_delete_image']);
+
+Route::get('admin/enable-image/{id}', ['uses' => 'Admin\FrontendImagesController@enableImage', 'as' => 'enableImage']);
+
+
 }); //end Route::group
 
 
