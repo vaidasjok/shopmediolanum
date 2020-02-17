@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Home | E-Shopper</title>
+    <title>Home | shopMediolanum</title>
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/prettyPhoto.css')}}" rel="stylesheet">
@@ -30,17 +30,19 @@
 <body>
 	<header id="header"><!--header-->
 		<div class="header_top"><!--header_top-->
-			<div class="container">
+			<div class="container header-container">
 				<div class="row">
-					<div class="col-sm-3">
+					<div class="col-md-3">
 						<div class="language-type">
 							<a href="#" class="english">EN</a>
 							<a href="#" class="russian">RU</a>
-							<a class="type" href="/set-type/women">Women</a>
-							<a href="/set-type/men">Men</a>
+							<div class="type">
+								<a class="{{ (request()->is('women/*')) ? 'active' : '' }}" href="/set-type/women">Women</a>
+								<a class="{{ (request()->is('men/*')) ? 'active' : '' }}" href="/set-type/men">Men</a>
+							</div>
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-md-6">
 						<div class="text-center logo">
 							<a href="/"><img src="{{asset('images/home/logo 4.svg')}}" alt="" /></a>
 						</div>
@@ -60,51 +62,43 @@
 								@if(Auth::check())
 								<li><a href="{{route('home')}}"><i class="ikona icon-user">&#xe805;</i></a></li>
 								@else
-								<li><a href="/login"><i class="ikona icon-user">&#xe805;</i>
+								<li><a href="/login"><i class="ikona icon-user">&#xe805;</i></a></li>
 								@endif
 							</ul>
 						</div>
 					</div>
 				</div>
+				<div class="search-block">
+					<form action="#" class="ff-search ">
+						<input class="search-search" type="text" placeholder="Search" value="">
+					</form>
+				</div>
+				
 			</div>
 		</div><!--/header_top-->
 		
-		<div class="header-middle"><!--header-middle-->
+		<div class="header-middle header-container"><!--header-middle-->
 			<div class="container">
 				<div class="row">
-					<div class="col-md-4 clearfix">
-						<div class="logo pull-left">
-							<a href="/"><img src="{{asset('images/home/logo.png')}}" alt="" /></a>
-						</div>
-						<div class="btn-group pull-right clearfix">
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									USA
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="">Canada</a></li>
-									<li><a href="">UK</a></li>
-								</ul>
-							</div>
-							
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									DOLLAR
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="">Canadian Dollar</a></li>
-									<li><a href="">Pound</a></li>
-								</ul>
-							</div>
-						</div>
+					<div class="col-md-8 clearfix" >
+					<ul class="shop-menu">
+						<li><a class="sale-link" href="#">Sale</a></li>
+						<li><a href="/{{ $type }}/clothing">Clothing</a></li>
+						<li><a href="/{{ $type }}/shoes">Shoes</a></li>
+						<li><a href="/{{ $type }}/accessoiries">Accessoiries</a></li>
+						<li><a href="/{{ $type }}/parfumes">Parfumes</a></li>
+					</ul>
+
 					</div>
-					<div class="col-md-8 clearfix">
+					<div class="col-md-4 clearfix">
 						<div class="shop-menu clearfix pull-right">
+
 						</div>
 					</div>
 				</div>
+
 			</div>
+			
 		</div><!--/header-middle-->
 		View name: {{$view_name}}
+		

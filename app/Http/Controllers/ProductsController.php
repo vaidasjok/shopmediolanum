@@ -201,14 +201,16 @@ class ProductsController extends Controller
     public function showCart() 
     {
         $cart = Session::get('cart');
+        $type = Type::where('is_active', 1)->first()->type;
 
         //cart is not empty
         if($cart) {
-            return view('cartproducts', ['cartItems' => $cart]);
+            return view('cartproducts', ['cartItems' => $cart, 'type' => $type]);
         //cart is empty
         } else {
             return redirect()->route('allProducts');
         }
+
     }
 
     public function deleteItemFromCart(Request $request, $id) {

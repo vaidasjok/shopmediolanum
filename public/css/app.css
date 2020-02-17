@@ -27,16 +27,6 @@
   color: #fff;
 }
 
-.language-type {
-  color: #000;
-  font-size: 14px;
-  padding: 0;
-}
-
-.language-type a {
-  padding: 11px 7px;
-}
-
 .cart {
   background-color: transparent;
   position: relative;

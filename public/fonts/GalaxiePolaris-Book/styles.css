@@ -1,0 +1,8 @@
+
+@font-face {
+  font-family: 'GalaxiePolaris-Book';
+  src: url('GalaxiePolaris-Book.eot?#iefix') format('embedded-opentype'),  url('GalaxiePolaris-Book.otf')  format('opentype'),
+	     url('GalaxiePolaris-Book.woff') format('woff'), url('GalaxiePolaris-Book.ttf')  format('truetype'), url('GalaxiePolaris-Book.svg#GalaxiePolaris-Book') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
