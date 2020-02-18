@@ -70,7 +70,7 @@ a.sale-link {
     color: #FC5D65;
 }
 .container {
-    width: 1230px;
+    max-width: 1230px;
 }
 .header-container {
     max-width: 1400px;
@@ -142,6 +142,22 @@ ul.shop-menu  li a {
 ul.shop-menu  li a:hover {
    font-family: 'GalaxiePolaris-Bold', sans-serif;
 }
+
+.advert-band {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #C4C4C4;
+    width: 100%;
+    height: 40px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    font-family: GalaxiePolaris-Bold, sans-serif;
+    font-size: 15px;
+    color: #FC5D65;
+    text-transform: uppercase;
+}
+
 a:focus {
     outline: none;
     outline-offset: 0;
@@ -161,6 +177,12 @@ h6 {
     font-family: 'GalaxiePolaris-Book', sans-serif;
 }
 
+h3 {
+    font-size: 18px;
+    font-family: 'GalaxiePolaris-Bold', sans-serif;
+    color: #222;
+}
+
 .btn:hover,
 .btn:focus {
     outline: none;
@@ -176,7 +198,7 @@ a#scrollUp {
     bottom: 0px;
     right: 10px;
     padding: 5px 10px;
-    background: #FE980F;
+    background: #333;
     color: #FFF;
     -webkit-animation: bounce 2s ease infinite;
     animation: bounce 2s ease infinite;
@@ -467,7 +489,7 @@ ul.sub-menu {
 **************************/
 
 #footer {
-    background: #F0F0E9;
+    background: #222;
 }
 
 .footer-top .container {
@@ -593,9 +615,9 @@ ul.sub-menu {
 }
 
 .single-widget h2 {
-    color: #666663;
-    font-family: 'GalaxiePolaris-Book', sans-serif;
-    font-size: 16px;
+    color: #aaa;
+    font-family: 'GalaxiePolaris-Bold', sans-serif;
+    font-size: 13px;
     font-weight: 500;
     margin-bottom: 22px;
     text-transform: uppercase;
@@ -606,11 +628,15 @@ ul.sub-menu {
 }
 
 .single-widget ul li a {
-    color: #8C8C88;
+    color: #fff;
     font-family: 'GalaxiePolaris-Book', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 300;
     padding: 5px 0;
+}
+
+.single-widget ul li a:active, .single-widget ul li a:visited {
+    background-color: #222;
 }
 
 .single-widget ul li a i {
@@ -619,7 +645,8 @@ ul.sub-menu {
 
 .single-widget ul li a:hover {
     background: none;
-    color: #FE980F;
+    color: #fff;
+    opacity: 0.7;
 }
 
 .searchform input {
@@ -661,21 +688,26 @@ ul.sub-menu {
 }
 
 .footer-bottom {
-    background: #D6D6D0;
+    background: #222;
     padding-top: 10px;
 }
 
 .footer-bottom p {
-    color: #363432;
+    color: #fff;
     font-family: 'GalaxiePolaris-Book', sans-serif;
     font-weight: 300;
     margin-left: 15px;
+    font-size: 10px;
 }
 
 .footer-bottom p span a {
-    color: #FE980F;
+    color: #fff;
     font-style: italic;
     text-decoration: underline;
+}
+
+.footer-bottom p span a:hover {
+    font-family: 'GalaxiePolaris-Book', sans-serif;
 }
 
 
@@ -775,13 +807,13 @@ ul.sub-menu {
 
 .left-sidebar h2,
 .brands_products h2 {
-    color: #FE980F;
-    font-family: 'GalaxiePolaris-Book', sans-serif;
-    font-size: 18px;
+    color: #222;
+    font-family: 'GalaxiePolaris-Bold', sans-serif;
+    font-size: 15px;
     font-weight: 700;
     margin: 0 auto 30px;
     text-align: center;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     position: relative;
     z-index: 3;
 }
@@ -975,10 +1007,10 @@ h2.title {
 }
 
 .productinfo h2 {
-    color: #FE980F;
+    color: #222;
     font-family: 'GalaxiePolaris-Book', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 15px;
+    /*font-weight: 700;*/
 }
 
 .product-overlay h2 {
@@ -1229,8 +1261,8 @@ h2.title {
 .pagination .active span:hover,
 .pagination .active a:focus,
 .pagination .active span:focus {
-    background-color: #FE980F;
-    border-color: #FE980F;
+    background-color: #222;
+    border-color: #222;
     color: #FFFFFF;
     cursor: default;
     z-index: 2;
@@ -1675,11 +1707,11 @@ h2.title {
 }
 
 #cart_items .cart_info .cart_menu {
-    background: #FE980F;
-    color: #fff;
-    font-size: 16px;
+    background: #f5f5f5;
+    color: #222;
+    font-size: 15px;
     font-family: 'GalaxiePolaris-Book', sans-serif;
-    font-weight: normal;
+    /*font-weight: normal;*/
 }
 
 #cart_items .cart_info .table.table-condensed thead tr {
@@ -1725,13 +1757,19 @@ h2.title {
 }
 
 #cart_items .cart_info .cart_total_price {
-    color: #FE980F;
-    font-size: 24px;
+    color: #222;
+    font-size: 15px;
+}
+
+#cart_items  td p {
+    font-size: 15px;
+    margin: 0px;
 }
 
 .cart_product {
     display: block;
     /*  margin: 15px -70px 10px 25px;*/
+    text-align: center;
 }
 
 .cart_quantity_button a {
@@ -1756,7 +1794,7 @@ h2.title {
 }
 
 .cart_delete {
-    display: block;
+    display: table-cell;
     margin-right: -12px;
     overflow: hidden;
 }
@@ -1869,9 +1907,9 @@ textarea {
     margin-left: 40px;
 }
 
-.update,
-.check_out {
-    background: #FE980F;
+.update, .update:visited,
+.check_out, .check_out:link, .check_out:visited {
+    background: #222;
     border-radius: 0;
     color: #FFFFFF;
     margin-top: 18px;
@@ -1879,6 +1917,12 @@ textarea {
     padding: 5px 15px;
 }
 
+.update:hover,
+.check_out:hover {
+    opacity: 0.7;
+    font-family: GalaxiePolaris-Book, sans-serif;
+    color: #fff;
+}
 .update {
     margin-left: 40px;
 }
@@ -2580,3 +2624,118 @@ textarea {
                top:-10px;
                opacity:0.9;
 }
+
+.front-wrapper {
+    max-width: 1230px;
+    margin: 0 auto;
+
+}
+    .banner {
+        max-width: 1230px;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .banner img {
+        width: 100%;
+    }
+    .row-two {
+        max-width: 1230px;
+        width: 100%;
+        justify-content: space-between;
+        margin: 30px auto 0px;
+    }
+    .two {
+        width: calc((100% - 20px)/2);
+    }
+    .two.second {
+        margin-left: 15px;
+    }
+
+    .two img {
+        width: 100%;
+    }
+    .row-three {
+        max-width: 1000px;
+        margin: 7.723577235772358% auto 0;
+    }
+    .grey-band {
+        display: block;
+        background-color: #C4C4C4;
+        width: 100%;
+        height: 50px;
+        margin-top: 167px;
+        margin-bottom: 50px;
+    }
+    .grey-band a:link, .grey-band a:visited, .grey-band a:hover, .grey-band a:active {
+        color: #fff;
+    }
+    .lygiuoti {
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items:center;
+
+    }
+    input#womenswear[type="radio"], input#menswear[type="radio"] {
+        background-color: #000;
+    }
+    .form-inline {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        justify-content: center;
+        margin-top: 28px;
+    }
+    .form-inline input {
+        vertical-align: middle;
+        margin: 5px 10px 5px 0;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 350px;
+    }
+    .form-inline button {
+        background-color: #222;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 13px;
+        font-family: GalaxyPolaris-Medium, sans-serif;
+        border-radius: 4px;
+    }
+
+    .form-inline button i {
+        font-size: 10px;
+    }
+    .form-inline button:hover {
+        background-color: #595959;
+    }
+    .form-info {
+        margin-bottom: 36px; 
+        font-size: 10px;
+    }
+    .form-info a:link, .form-info a:visited, .form-info a:hover, .form-info a:active {
+        text-decoration: underline;
+        font-family: 'GalaxiePolaris-Book', sans-serif;
+    }
+    
+    .form-info a:hover {
+        opacity: 0.5;
+    }
+    .follow-us {
+        display: inline-block!important;
+    }
+
+    @media (max-width: 800px) {
+        .form-inline input {
+            margin: 10px 0;
+            width: initial;
+        }
+
+        .form-inline {
+        flex-direction: column;
+        align-items: stretch;
+        }
+    }
+
+

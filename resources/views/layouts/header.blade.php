@@ -100,5 +100,8 @@
 			</div>
 			
 		</div><!--/header-middle-->
-		View name: {{$view_name}}
+		<div class="advert-band">
+			Sale. Shop Up to 50% 
+		</div>
+		<!-- View name: --> {{--$view_name--}}
 		

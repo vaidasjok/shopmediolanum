@@ -61,6 +61,83 @@ class ProductsController extends Controller
 
     }
 
+    public function showMenClothingPage()
+    {
+
+        $active_type = Type::where('is_active', 1)->first();
+        $clothing_category_id = Category::where('name', 'Clothing')->first()->id;
+
+        //get list of shoe category and child categories ids for products
+        $clothing_categories_ids = Category::where('parent_id', $clothing_category_id)->pluck('id')->toArray();
+
+        $categories = Category::with('categories')->where('id', $clothing_category_id)->get();
+        // print_r($shoe_categories_ids); die;
+
+        if($active_type->type == 'men') {
+            $products = Product::where('type' ,'men')->whereIn('category_id', $clothing_categories_ids)->where('enabled', 1)->paginate(12);
+        } else {
+            $products = Product::where('type', 'women')->whereIn('category_id', $clothing_categories_ids)->where('enabled', 1)->paginate(12);
+        }
+        $type = $active_type->type;
+        return view('all_shoes', compact('products', 'categories', 'type'));
+        // return view('all_clothes');
+    }
+
+    public function showMenAccessoiriesPage()
+    {
+        $active_type = Type::where('is_active', 1)->first();
+        $accessoiries_category_id = Category::where('name', 'Accessoiries')->first()->id;
+
+        //get list of shoe category and child categories ids for products
+        $accessoiries_categories_ids = Category::where('parent_id', $accessoiries_category_id)->pluck('id')->toArray();
+
+        $categories = Category::with('categories')->where('id', $accessoiries_category_id)->get();
+        // print_r($shoe_categories_ids); die;
+
+        if($active_type->type == 'men') {
+            $products = Product::where('type' ,'men')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+        } else {
+            $products = Product::where('type', 'women')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+        }
+        $type = $active_type->type;
+        return view('all_shoes', compact('products', 'categories', 'type'));
+    }
+
+    public function showMenParfumesPage()
+    {
+        $active_type = Type::where('is_active', 1)->first();
+        $parfumes_category_id = Category::where('name', 'Accessoiries')->first()->id;
+
+        //get list of shoe category and child categories ids for products
+        $parfumes_categories_ids = Category::where('parent_id', $parfumes_category_id)->pluck('id')->toArray();
+
+        $categories = Category::with('categories')->where('id', $parfumes_category_id)->get();
+        // print_r($shoe_categories_ids); die;
+
+        if($active_type->type == 'men') {
+            $products = Product::where('type' ,'men')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+        } else {
+            $products = Product::where('type', 'women')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+        }
+        $type = $active_type->type;
+        return view('all_shoes', compact('products', 'categories', 'type'));
+    }
+
+    public function showWomenClothingPage()
+    {
+        return view('all_clothes');
+    }
+
+    public function showWomenAccessoiriesPage()
+    {
+        return view('all_accessoiries');
+    }
+
+    public function showWomenParfumesPage()
+    {
+        return view('all_parfumes');
+    }
+
     public function showWomenShoesPage()
     {
         $active_type = Type::where('is_active', 1)->first();
@@ -85,6 +162,7 @@ class ProductsController extends Controller
     public function showTypeCategoryProducts(Request $request, $type, $category_url)
     {
         $url = $category_url;
+        // dd($url);
         
         $active_type = Type::where('is_active', 1)->first();
 

@@ -26,7 +26,7 @@ class FrontendImagesController extends Controller
             if(!empty($link)) {
                 $link = $link;
             } else {
-                $link = " ";
+                $link = "";
             }
 
         	Validator::make($request->all(), ['image' => 'required|image|mimes:png,jpg,jpeg|max:2000'])->validate(); 

@@ -5,12 +5,12 @@
 <section id="cart_items">
 	<div class="container">
 		@include('alert')
-		<div class="breadcrumbs">
+		<!-- <div class="breadcrumbs">
 			<ol class="breadcrumb">
 			  <li><a href="#">Home</a></li>
 			  <li class="active">Shopping Cart</li>
 			</ol>
-		</div>
+		</div> -->
 		<div class="table-responsive cart_info">
 			<table class="table table-condensed">
 				<thead>
@@ -28,7 +28,7 @@
 					@foreach($cartItems->items as $item)
 					<tr>
 						<td class="cart_product">
-							<a href="/product/{{ $item['data']->id }}"><img src="{{Storage::disk('local')->url('product_images/' . $item['data']['image'])}}" width="100" height="100" alt=""></a>
+							<a href="/product/{{ $item['data']->id }}"><img src="{{Storage::disk('local')->url('product_images/' . $item['data']['image'])}}" height="70" alt=""></a>
 						</td>
 						<td class="cart_description">
 							<h4><a href="/product/{{ $item['data']->id }}">{{$item['data']['name']}}</a></h4>

@@ -34,7 +34,7 @@
 		        </div>
 		        <div class="form-group">
 	            	<label for="link">Link</label>
-		            <input class="form-control" type="text" name='link' id='link' placeholder="/some-link-example" >
+		            <input class="form-control" type="text" name='link' id='link' placeholder="/some-link-example" value="" >
 		        </div>
 		        <label for="type">Type</label> (Here first part is row, second - column of the page position)
 		        <select class="form-control" name="type" id="type">

@@ -17,6 +17,6 @@ class PagesController extends Controller
 
     	$type = Type::where('is_active', 1)->first()->type;
 
-    	return view('front', ['image_one' => $image_one, 'image_two_one' => $image_two_one, 'image_two_two' => $image_two_two, 'type' => $type]);
+    	return view('front', ['image_one' => $image_one, 'image_two_one' => $image_two_one, 'image_two_two' => $image_two_two, 'image_three' => $image_three, 'type' => $type]);
     }
 }

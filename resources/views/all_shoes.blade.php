@@ -68,13 +68,7 @@
 							</div>
 						</div><!--/brands_products-->
 						
-						<div class="price-range"><!--price-range-->
-							<h2>Price Range</h2>
-							<div class="well">
-								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
-								 <b>$ 0</b> <b class="pull-right">$ 600</b>
-							</div>
-						</div><!--/price-range-->
+
 						
 						<div class="shipping text-center"><!--shipping-->
 							<img src="images/home/shipping.jpg" alt="" />
@@ -85,7 +79,7 @@
 				
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Features Items</h2>
+						<!-- <h2 class="title text-center">Features Items</h2> -->
 						@foreach($products->chunk(3) as $chunks)
 						<div class="row">
 						@foreach($chunks as $product)
@@ -96,13 +90,13 @@
 										<div class="productinfo text-center">
 											{{ csrf_field() }}
 											<img src="{{Storage::disk('local')->url('product_images/' . $product->image)}}" alt="" />
-											<h2>{{$product->price}}</h2>
+											<h2>{{number_format($product->price, 0)}} €</h2>
 											<p>{{$product->name}}</p>
 											<a href="#" class="btn btn-default add-to-cart"><!-- <i class="fa fa-shopping-cart"></i> --><!-- Add to cart -->View</a>
 										</div>
 										<div class="product-overlay">
 											<div class="overlay-content">
-												<h2>{{$product->price}}</h2>
+												<h2>{{number_format($product->price, 0)}} €</h2>
 												<p>{{$product->name}}</p>
 												<!-- <a href="{{route('addToCartProduct', ['id' => $product->id])}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a> -->
 												<a href="/product/{{ $product->id }}" class="ajaxGET-disable btn btn-default add-to-cart">

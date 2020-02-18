@@ -84,12 +84,15 @@ Route::get('men/clothing', ['uses' => 'ProductsController@showMenClothingPage', 
 
 Route::get('men/accessoiries', ['uses' => 'ProductsController@showMenAccessoiriesPage', 'as' => 'showMenAccessoiriesPage']);
 
+Route::get('men/parfumes', ['uses' => 'ProductsController@showMenParfumesPage', 'as' => 'showMenParfumesPage']);
+
 Route::get('women/shoes', ['uses' => 'ProductsController@showWomenShoesPage', 'as' => 'showWomenShoesPage']);
 
 Route::get('women/clothing', ['uses' => 'ProductsController@showWomenClothingPage', 'as' => 'showWomenClothingPage']);
 
 Route::get('women/accessoiries', ['uses' => 'ProductsController@showWomenAccessoiriesPage', 'as' => 'showWomenAccessoiriesPage']);
 
+Route::get('women/parfumes', ['uses' => 'ProductsController@showWomenParfumesPage', 'as' => 'showWomenParfumesPage']);
 
 
 //user authentication
