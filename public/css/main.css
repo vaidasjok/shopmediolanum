@@ -1130,7 +1130,7 @@ h2.title {
 
 .choose ul li a:hover {
     background: none;
-    color: #FE980F;
+    color: #222;
 }
 
 .category-tab {
@@ -2724,6 +2724,30 @@ textarea {
     }
     .follow-us {
         display: inline-block!important;
+    }
+    .choose .ikona {
+        font-size: 16px;
+    }
+
+    .product-information select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding: 5px;
+    }
+    #get-price, .product-information span span {
+        color: #222;
+        font-size: 24px;
+    }
+
+
+    button.cart {
+        margin-top: -2px;
+        background-color: #222;
+    }
+
+    li.wishlist a i {
+        color: #222;
     }
 
     @media (max-width: 800px) {

@@ -3,9 +3,11 @@
 @section('center')
 <div class="front-wrapper">
 	<div class="banner">
+		@if(isset($image_one))
 		@if($image_one->link !== '') <a href="{{$image_one->link}}"> @endif
 			<img style="margin: 0 auto; display: block;" src="{{Storage::disk('local')->url('frontend_images/' . $image_one->image)}}" alt="">
 		@if($image_one->link != "") </a> @endif
+		@endif
 	</div>
 	<div class="row-two" style="display: flex; ">
 		<div class="two">

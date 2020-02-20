@@ -80,10 +80,10 @@
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
 						<!-- <h2 class="title text-center">Features Items</h2> -->
+						@if($products->count() == 0 ) So far the category has no products @endif
 						@foreach($products->chunk(3) as $chunks)
 						<div class="row">
 						@foreach($chunks as $product)
-							
 							<div class="col-sm-4">
 							<div class="product-image-wrapper">
 								<div class="single-products">
@@ -107,8 +107,8 @@
 								</div>
 								<div class="choose">
 									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+										<li class="@if((Session::has('wishlist') && array_key_exists($product->id, Session::get('wishlist')->getList()))) wishlist @endif"><a href="/products/add-to-wishlist/{{$product->id}}"><i class="ikona icon-star-1">&#xe804;</i><span>Add to wishlist</span></a></li>
+										<!-- <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li> -->
 									</ul>
 								</div>
 							</div>

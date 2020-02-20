@@ -51,7 +51,13 @@
 						<div class="social-icons pull-right">
 							<ul class="nav navbar-nav">
 								<!-- <li><a href="#"><i class="fa fa-facebook"></i></a></li> -->
-								<li><a href="#"><i class="ikona icon-star-1">&#xe804;</i></a></li>
+								<li><a href="/view-wishlist"><i class="ikona icon-star-1">&#xe804;</i>
+									<span id="wishlistQuantity" class="cart-with-numbers">
+									@if(Session::has('wishlist') && Session::get('wishlist')->totalQuantity > 0 )
+	                                	{{ Session::get('wishlist')->totalQuantity }}
+		                            @endif
+		                            </span>
+								</a></li>
 								<li class="cart"><a href="{{route('cartProducts')}}"><i class="ikona icon-bag">&#xe801;</i>
 									<span id="totalQuantity" class="cart-with-numbers">
 									@if(Session::has('cart') && Session::get('cart')->totalQuantity > 0 )
@@ -103,5 +109,5 @@
 		<div class="advert-band">
 			Sale. Shop Up to 50% 
 		</div>
-		<!-- View name: --> {{--$view_name--}}
+		View name: {{$view_name}}
 		

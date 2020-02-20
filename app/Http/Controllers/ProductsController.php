@@ -106,7 +106,7 @@ class ProductsController extends Controller
     public function showMenParfumesPage()
     {
         $active_type = Type::where('is_active', 1)->first();
-        $parfumes_category_id = Category::where('name', 'Accessoiries')->first()->id;
+        $parfumes_category_id = Category::where('name', 'Parfumes')->first()->id;
 
         //get list of shoe category and child categories ids for products
         $parfumes_categories_ids = Category::where('parent_id', $parfumes_category_id)->pluck('id')->toArray();
@@ -125,17 +125,62 @@ class ProductsController extends Controller
 
     public function showWomenClothingPage()
     {
-        return view('all_clothes');
+        $active_type = Type::where('is_active', 1)->first();
+        $clothes_category_id = Category::where('name', 'clothing')->first()->id;
+
+        //get list of shoe category and child categories ids for products
+        $clothes_categories_ids = Category::where('parent_id', $clothes_category_id)->pluck('id')->toArray();
+
+        $categories = Category::with('categories')->where('id', $clothes_category_id)->get();
+        // print_r($shoe_categories_ids); die;
+
+        if($active_type->type == 'men') {
+            $products = Product::where('type' ,'men')->whereIn('category_id', $clothes_categories_ids)->where('enabled', 1)->paginate(12);
+        } else {
+            $products = Product::where('type', 'women')->whereIn('category_id', $clothes_categories_ids)->where('enabled', 1)->paginate(12);
+        }
+        $type = $active_type->type;
+        return view('all_shoes', compact('products', 'categories', 'type'));
     }
 
     public function showWomenAccessoiriesPage()
     {
-        return view('all_accessoiries');
+        $active_type = Type::where('is_active', 1)->first();
+        $accessoiries_category_id = Category::where('name', 'accessoiries')->first()->id;
+
+        //get list of shoe category and child categories ids for products
+        $accessoiries_categories_ids = Category::where('parent_id', $accessoiries_category_id)->pluck('id')->toArray();
+
+        $categories = Category::with('categories')->where('id', $accessoiries_category_id)->get();
+        // print_r($shoe_categories_ids); die;
+
+        if($active_type->type == 'men') {
+            $products = Product::where('type' ,'men')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+        } else {
+            $products = Product::where('type', 'women')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+        }
+        $type = $active_type->type;
+        return view('all_shoes', compact('products', 'categories', 'type'));
     }
 
     public function showWomenParfumesPage()
     {
-        return view('all_parfumes');
+        $active_type = Type::where('is_active', 1)->first();
+        $parfumes_category_id = Category::where('name', 'parfumes')->first()->id;
+
+        //get list of shoe category and child categories ids for products
+        $parfumes_categories_ids = Category::where('parent_id', $parfumes_category_id)->pluck('id')->toArray();
+
+        $categories = Category::with('categories')->where('id', $parfumes_category_id)->get();
+        // print_r($shoe_categories_ids); die;
+
+        if($active_type->type == 'men') {
+            $products = Product::where('type' ,'men')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+        } else {
+            $products = Product::where('type', 'women')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+        }
+        $type = $active_type->type;
+        return view('all_shoes', compact('products', 'categories', 'type'));
     }
 
     public function showWomenShoesPage()
@@ -286,7 +331,7 @@ class ProductsController extends Controller
             return view('cartproducts', ['cartItems' => $cart, 'type' => $type]);
         //cart is empty
         } else {
-            return redirect()->route('allProducts');
+            return redirect()->route('showMenShoesPage');
         }
 
     }
@@ -312,7 +357,8 @@ class ProductsController extends Controller
 
     public function checkoutProducts()
     {
-        return view('checkoutproducts');
+        $active_type = Type::where('is_active', 1)->first()->type;
+        return view('checkoutproducts', ['type' => $active_type]);
     }
 
     //sis metodas nenaudojamas, naudojamas toks pat Payment\PaymentsController

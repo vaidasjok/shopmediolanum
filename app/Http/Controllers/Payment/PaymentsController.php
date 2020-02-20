@@ -6,6 +6,7 @@ use App\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Cart;
+use App\Type;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,10 +36,10 @@ class PaymentsController extends Controller
     public function showPaymentPage(){
 
         $payment_info = Session::get('payment_info');
-
+        $type = Type::where('is_active', 1)->first()->type;
             //has not paied
             if($payment_info['status'] == 'on_hold'){
-                return view('payment.paymentpage',['payment_info'=> $payment_info]);
+                return view('payment.paymentpage',['payment_info'=> $payment_info, 'type' => $type]);
              
             } else {
                  return redirect()->route("allProducts");

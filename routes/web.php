@@ -227,3 +227,7 @@ Route::get('products/addToCartAjaxGet/{id}', ['uses' => 'ProductsController@addT
 
 Route::get('{type}/{category_url}', ['uses' => 'ProductsController@showTypeCategoryProducts', 'as' => 'showTypeCategoryProducts']);
 
+Route::get('/products/add-to-wishlist/{id}', ['uses' => 'WishlistController@addRemoveProductToList', 'as' => 'addRemoveProductToList']);
+
+Route::get('/view-wishlist', ['uses' => 'WishlistController@viewWishlist', 'as' => 'viewWishlist']);
+
