@@ -37,7 +37,7 @@
 									<div class="panel-body">
 										<ul>
 											@foreach($category->categories as $subcat)
-											<li><a href="/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
+											<li><a href="/{{ App::getLocale() }}/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
 											@endforeach
 										</ul>
 									</div>
@@ -108,6 +108,7 @@
 
 						</div>
 						<div class="col-sm-7">
+							<div id="getLang">{{ App::getLocale() }}</div>
 							<div class="product-information"><!--/product-information-->
 								<img src="/images/product-details/new.jpg" class="newarrival" alt="" />
 								<h2>{{ $product->name }}</h2>

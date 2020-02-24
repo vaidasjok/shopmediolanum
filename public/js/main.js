@@ -34,12 +34,13 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('#selSize').change(function() {
+        var lang = $('#getLang').text();
         var idSize = $(this).val();
         if(idSize == "") {
             return false;
         }
         $.ajax({
-            url: '/get-product-price',
+            url: '/' + lang + '/get-product-price',
             method: 'get',
             data: {idSize: idSize},
             success: function(data, status, xhr) {
@@ -89,7 +90,8 @@ $(document).ready(function () {
     $(document).ready(function() {
         $('.ajaxPOST').click(function(e) {
             e.preventDefault();
-            var url = '/products/addToCartAjaxPostTwo';
+            var lang = $('#getLang').text();
+            var url = '/' + lang + '/products/addToCartAjaxPostTwo';
             var _token = $("input[name = '_token']").val();
             var selSize = $('#selSize').val();
             

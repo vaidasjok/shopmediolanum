@@ -40,8 +40,9 @@ class ProductsController extends Controller
         return view('shophome', compact('products', 'categories', 'type'));
     }
 
-    public function showMenShoesPage()
+    public function showMenShoesPage(Request $request)
     {
+        // dd($request->getRequestUri());
         $active_type = Type::where('is_active', 1)->first();
         $shoe_category_id = Category::where('name', 'shoes')->first()->id;
 
@@ -57,6 +58,7 @@ class ProductsController extends Controller
             $products = Product::where('type', 'women')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(12);
         }
         $type = $active_type->type;
+        // dd($type);
         return view('all_shoes', compact('products', 'categories', 'type'));
 
     }

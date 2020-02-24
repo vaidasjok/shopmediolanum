@@ -20,6 +20,8 @@ Route::get('set-type/{type}', ['uses' => 'ProductsController@setType', 'as' => '
 //shop home page
 Route::get('/', ['uses' => 'PagesController@front', 'as' => 'front']);
 
+Route::get('lang/{lang}', 'LocalizationController@switchLang');
+
 Route::get('products', ['uses' => 'ProductsController@index', 'as' => 'allProducts']);
 
 //men products
@@ -76,11 +78,11 @@ Route::get('payment/paymentreceipt/{paymentID}/{payerID}', ['uses' => 'Payment\P
 
 
 
-
+// Route::group(['prefix' =>  App::getLocale()], function(){
 //products dedicated pages
-Route::get('men/shoes', ['uses' => 'ProductsController@showMenShoesPage', 'as' => 'showMenShoesPage']);
+Route::get('/men/shoes', ['uses' => 'ProductsController@showMenShoesPage', 'as' => 'showMenShoesPage']);
 
-Route::get('men/clothing', ['uses' => 'ProductsController@showMenClothingPage', 'as' => 'showMenClothingPage']);
+Route::get('/men/clothing', ['uses' => 'ProductsController@showMenClothingPage', 'as' => 'showMenClothingPage']);
 
 Route::get('men/accessoiries', ['uses' => 'ProductsController@showMenAccessoiriesPage', 'as' => 'showMenAccessoiriesPage']);
 
@@ -94,6 +96,7 @@ Route::get('women/accessoiries', ['uses' => 'ProductsController@showWomenAccesso
 
 Route::get('women/parfumes', ['uses' => 'ProductsController@showWomenParfumesPage', 'as' => 'showWomenParfumesPage']);
 
+// });
 
 //user authentication
 Auth::routes();
@@ -225,7 +228,9 @@ Route::post('products/addToCartAjaxPostTwo', ['uses' => 'ProductsController@addT
 //adding to cart using Ajax get request
 Route::get('products/addToCartAjaxGet/{id}', ['uses' => 'ProductsController@addToCartAjaxGet', 'as' => 'addToCartAjaxGet']);
 
+// Route::group(['prefix' =>  App::getLocale()], function(){
 Route::get('{type}/{category_url}', ['uses' => 'ProductsController@showTypeCategoryProducts', 'as' => 'showTypeCategoryProducts']);
+// });
 
 Route::get('/products/add-to-wishlist/{id}', ['uses' => 'WishlistController@addRemoveProductToList', 'as' => 'addRemoveProductToList']);
 

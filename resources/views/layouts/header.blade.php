@@ -34,11 +34,12 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="language-type">
-							<a href="#" class="english">EN</a>
-							<a href="#" class="russian">RU</a>
+							<a href="/{{ App::getLocale() }}/lang/en" class="english">EN</a>
+							<a href="/{{ App::getLocale() }}/lang/ru" class="russian">RU</a>
+{{ App::getLocale() }}
 							<div class="type">
-								<a class="{{ (request()->is('women/*')) ? 'active' : '' }}" href="/set-type/women">Women</a>
-								<a class="{{ (request()->is('men/*')) ? 'active' : '' }}" href="/set-type/men">Men</a>
+								<a class="{{ (request()->is('women/*')) ? 'active' : '' }}" href="/{{ App::getLocale() }}/set-type/women">{{ __('Women') }}</a>
+								<a class="{{ (request()->is('men/*')) ? 'active' : '' }}" href="/{{ App::getLocale() }}/set-type/men">{{ __('Men') }}</a>
 							</div>
 						</div>
 					</div>
@@ -76,7 +77,7 @@
 				</div>
 				<div class="search-block">
 					<form action="#" class="ff-search ">
-						<input class="search-search" type="text" placeholder="Search" value="">
+						<input class="search-search" type="text" placeholder="{{ __('Search') }}" value="">
 					</form>
 				</div>
 				
@@ -88,11 +89,11 @@
 				<div class="row">
 					<div class="col-md-8 clearfix" >
 					<ul class="shop-menu">
-						<li><a class="sale-link" href="#">Sale</a></li>
-						<li><a href="/{{ $type }}/clothing">Clothing</a></li>
-						<li><a href="/{{ $type }}/shoes">Shoes</a></li>
-						<li><a href="/{{ $type }}/accessoiries">Accessoiries</a></li>
-						<li><a href="/{{ $type }}/parfumes">Parfumes</a></li>
+						<li><a class="sale-link" href="#">{{ __('Sale') }}</a></li>
+						<li><a href="/{{ App::getLocale() }}/{{ $type }}/clothing">{{ __('Clothing') }}</a></li>
+						<li><a href="/{{ App::getLocale() }}/{{ $type }}/shoes">{{ __('Shoes') }}</a></li>
+						<li><a href="/{{ App::getLocale() }}/{{ $type }}/accessoiries">{{ __('Accessoiries') }}</a></li>
+						<li><a href="/{{ App::getLocale() }}/{{ $type }}/perfumes">{{ __('Perfumes') }}</a></li>
 					</ul>
 
 					</div>
@@ -107,7 +108,7 @@
 			
 		</div><!--/header-middle-->
 		<div class="advert-band">
-			Sale. Shop Up to 50% 
+			{{ __('Sale. Shop Up to 50%') }}' 
 		</div>
 		View name: {{$view_name}}
 		

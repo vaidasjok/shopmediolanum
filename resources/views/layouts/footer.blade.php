@@ -4,7 +4,7 @@
 				<div class="row">
 					<div class="col-sm-3">
 						<div class="single-widget">
-							<h2>Follow Us</h2>
+							<h2>{{ __('Follow Us') }}</h2>
 							<ul class="nav nav-pills nav-stacked">
 								<li><a class="follow-us" href="#"><i class="ikona icon-facebook">&#xe802;</i></a><a class="follow-us" href="#"><i class="ikona icon-instagram">&#xe803;</i></a></li>
 							</ul>
@@ -12,7 +12,7 @@
 					</div>
 					<div class="col-sm-3">
 						<div class="single-widget">
-							<h2>Quality</h2>
+							<h2>{{ __('Quality') }}</h2>
 							<ul class="nav nav-pills nav-stacked">
 								<li><a href="#">shopMediolanum Customer Promise</a></li>
 							</ul>

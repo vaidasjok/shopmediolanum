@@ -37,7 +37,7 @@
 									<div class="panel-body">
 										<ul>
 											@foreach($category->categories as $subcat)
-											<li><a href="/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
+											<li><a href="/{{ App::getLocale() }}/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
 											@endforeach
 <!-- 											----
 											<li><a href="">Nike </a></li>
@@ -99,7 +99,7 @@
 												<h2>{{number_format($product->price, 0)}} €</h2>
 												<p>{{$product->name}}</p>
 												<!-- <a href="{{route('addToCartProduct', ['id' => $product->id])}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a> -->
-												<a href="/product/{{ $product->id }}" class="ajaxGET-disable btn btn-default add-to-cart">
+												<a href="/{{ App::getLocale() }}/product/{{ $product->id }}" class="ajaxGET-disable btn btn-default add-to-cart">
 													<div class="url" style="display: none;">{{route('addToCartAjaxGet', ['id' => $product->id])}}</div>
 													<!-- <i class="fa fa-shopping-cart"></i> -->View</a>
 											</div>
@@ -107,7 +107,7 @@
 								</div>
 								<div class="choose">
 									<ul class="nav nav-pills nav-justified">
-										<li class="@if((Session::has('wishlist') && array_key_exists($product->id, Session::get('wishlist')->getList()))) wishlist @endif"><a href="/products/add-to-wishlist/{{$product->id}}"><i class="ikona icon-star-1">&#xe804;</i><span>Add to wishlist</span></a></li>
+										<li class="@if((Session::has('wishlist') && array_key_exists($product->id, Session::get('wishlist')->getList()))) wishlist @endif"><a href="/{{ App::getLocale() }}/products/add-to-wishlist/{{$product->id}}"><i class="ikona icon-star-1">&#xe804;</i><span>Add to wishlist</span></a></li>
 										<!-- <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li> -->
 									</ul>
 								</div>
