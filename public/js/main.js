@@ -66,6 +66,10 @@ $(document).ready(function () {
     $(document).ready(function() {
         $('.ajaxGET').click(function(e) {
             e.preventDefault();
+            var idSize = $('#selSize').val();
+            if(idSize == "") {
+                return false;
+            }
             var url = $(this).find('.url').text();
             var _token = $("input[name = '_token']").val();
 
@@ -94,6 +98,9 @@ $(document).ready(function () {
             var url = '/' + lang + '/products/addToCartAjaxPostTwo';
             var _token = $("input[name = '_token']").val();
             var selSize = $('#selSize').val();
+            if(selSize == "") {
+                return false;
+            }
             
             $.ajax({
                 method: "POST",

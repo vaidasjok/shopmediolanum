@@ -19,7 +19,7 @@
 
 
     <h2>Add Front Page Images</h2>
-    <form action="/admin/frontend-images" method="post" class=""  enctype="multipart/form-data">
+    <form action="/{{ App::getLocale() }}/admin/frontend-images" method="post" class=""  enctype="multipart/form-data">
         {{csrf_field()}}
 		<div class="field_wrapper col-xs-12">
 			<div class="row" style="margin-bottom: 10px;">
@@ -30,7 +30,7 @@
 		        <!-- <a href="javascript:void(0);" class="col-sm-2 btn btn-info add_button">Add Image</a> -->
 		        <div class="form-group">
 	            	<label for="title">Title</label>
-		            <input class="form-control" type="text" name='title' id='title' placeholder="Tile" >
+		            <input class="form-control" type="text" name='title' id='title' placeholder="Tile" required >
 		        </div>
 		        <div class="form-group">
 	            	<label for="link">Link</label>

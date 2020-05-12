@@ -5,7 +5,7 @@
 
 <div class="table-responsive">
 
-    <form action="/admin/updateProduct/{{$product->id}}" method="post">
+    <form action="/{{ App::getLocale() }}/admin/updateProduct/{{$product->id}}" method="post">
         <input type="hidden" name="type" value="{{$product->type}}">
         {{csrf_field()}}
 

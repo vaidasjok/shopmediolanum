@@ -19,11 +19,7 @@
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->       
-    <link rel="shortcut icon" href="{{asset('images/ico/favicon.ico')}}">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{asset('images/ico/apple-touch-icon-144-precomposed.png')}}">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{asset('images/ico/apple-touch-icon-114-precomposed.png')}}">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{asset('images/ico/apple-touch-icon-72-precomposed.png')}}">
-    <link rel="apple-touch-icon-precomposed" href="{{asset('images/ico/apple-touch-icon-57-precomposed.png')}}">
+
     <script src="{{asset('js/jquery.js')}}"></script>
 </head><!--/head-->
 
@@ -36,10 +32,10 @@
 						<div class="language-type">
 							<a href="/{{ App::getLocale() }}/lang/en" class="english">EN</a>
 							<a href="/{{ App::getLocale() }}/lang/ru" class="russian">RU</a>
-{{ App::getLocale() }}
+{{-- App::getLocale() --}}
 							<div class="type">
-								<a class="{{ (request()->is('women/*')) ? 'active' : '' }}" href="/{{ App::getLocale() }}/set-type/women">{{ __('Women') }}</a>
-								<a class="{{ (request()->is('men/*')) ? 'active' : '' }}" href="/{{ App::getLocale() }}/set-type/men">{{ __('Men') }}</a>
+								<a class="{{ (request()->is(App::getLocale() . '/women/*')) ? 'active' : '' }}" href="/{{ App::getLocale() }}/set-type/women">{{ __('Women') }}</a>
+								<a class="{{ (request()->is(App::getLocale() . '/men/*')) ? 'active' : '' }}" href="/{{ App::getLocale() }}/set-type/men">{{ __('Men') }}</a>
 							</div>
 						</div>
 					</div>
@@ -108,7 +104,7 @@
 			
 		</div><!--/header-middle-->
 		<div class="advert-band">
-			{{ __('Sale. Shop Up to 50%') }}' 
+			{{ __('Sale. Shop Up to 50%') }} 
 		</div>
 		View name: {{$view_name}}
 		

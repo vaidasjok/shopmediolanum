@@ -6,11 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class WomenCategory extends Model
 {
-    protected $table = "women_categories";
+    use \Dimsav\Translatable\Translatable;
 
-    public function categories()
+
+    public $translatedAttributes = ['name', 'description'];
+
+    protected $fillable = ['product_id', 'url', 'status'];
+
+    public function women_categories()
     {
     	return $this->hasMany('App\WomenCategory', 'parent_id');
     }
+
 
 }

@@ -11,6 +11,7 @@ use App\Type;
 use App\ProductAttribute;
 use App\ProductsImage;
 use Image;
+use App\Brand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -34,6 +35,8 @@ class AdminProductsController extends Controller
         $price = $request->input('price');
         $category_id = $request->input('category_id');
         $size_and_fit = $request->input('size_and_fit');
+        $brand_id = $request->input('brand_id');
+
         if(empty($request->input('enabled'))) {
             $enabled = 0;
         } else {
@@ -49,8 +52,9 @@ class AdminProductsController extends Controller
         $imageEncoded = File::get($request->image);
         Storage::disk('local')->put('public/product_images/' . $imageName, $imageEncoded);
 
-        $newProductArray = array('name' => $name, 'description' => $description, 'image' => $imageName, 'type' => $type, 'price' => $price, 'category_id' => $category_id, 'size_and_fit' => $size_and_fit, 'enabled' => $enabled ); 
-        $created = DB::table('products')->insert($newProductArray);
+        $newProductArray = array('name' => $name, 'description' => $description, 'brand_id' => $brand_id, 'image' => $imageName, 'type' => $type, 'price' => $price, 'category_id' => $category_id, 'size_and_fit' => $size_and_fit, 'enabled' => $enabled ); 
+        // $created = DB::table('products')->insert($newProductArray);
+        $created = Product::create($newProductArray);
 
         if($created) {
             return redirect()->route('adminDisplayProducts');
@@ -72,7 +76,12 @@ class AdminProductsController extends Controller
         $selected = "";
         foreach($categories as $cat) {
             $categories_dropdown .= "<option value = '" . $cat->id . "' >" . $cat->name . "</option>";
-            $sub_categories = Category::where('parent_id', $cat->id)->get();
+            if($active_type == 'men') {
+                $sub_categories = Category::where('parent_id', $cat->id)->get();
+            } else {
+                $sub_categories = WomenCategory::where('parent_id', $cat->id)->get();
+            }
+            
             foreach($sub_categories as $sub_cat) {
                 $categories_dropdown .= "<option value = '" . $sub_cat->id . "' >&nbsp;--&nbsp;" . $sub_cat->name . "</option>";
                 $selected = '';
@@ -246,23 +255,37 @@ class AdminProductsController extends Controller
             $enabled = 1;
         }
 
-        $arrayToUpdate = array(
-                            'name' => $name,
-                            'description' => $description,
-                            'type' => $type,
-                            'price' => $price,
-                            'category_id' => $category_id,
-                            'size_and_fit' => $size_and_fit,
-                            'enabled' => $enabled
-                        );
+        //po products vertimo pridejau si buda vietoje zemiau esancio DB::table
+        $productToUpdate = Product::findOrFail($id);
+        $productToUpdate->name = $name;
+        $productToUpdate->description = $description;
+        $productToUpdate->type = $type;
+        $productToUpdate->price = $price;
+        $productToUpdate->category_id = $category_id;
+        $productToUpdate->size_and_fit = $size_and_fit;
+        $productToUpdate->enabled = $enabled;
+        $productToUpdate->save();
 
-        DB::table('products')->where('id', $id)->update($arrayToUpdate);
+
+        // $arrayToUpdate = array(
+        //                     'name' => $name,
+        //                     'description' => $description,
+        //                     'type' => $type,
+        //                     'price' => $price,
+        //                     'category_id' => $category_id,
+        //                     'size_and_fit' => $size_and_fit,
+        //                     'enabled' => $enabled
+        //                 );
+
+        // DB::table('products')->where('id', $id)->update($arrayToUpdate);
 
         return redirect()->route('adminDisplayProducts');
     }
 
     public function createProductForm()
     {
+        $brands = Brand::get();
+
         // $categories = Category::all();
         $active_type = Type::where('is_active', 1)->first();
         if($active_type->type == 'men') {
@@ -274,13 +297,17 @@ class AdminProductsController extends Controller
         $categories_dropdown = "<option selected disabled>Select</option>";
         foreach($categories as $cat) {
             $categories_dropdown .= "<option value = '" . $cat->id . "'>" . $cat->name . "</option>";
-            $sub_categories = Category::where('parent_id', $cat->id)->get();
+            if($active_type->type == 'men') {
+                $sub_categories = Category::where('parent_id', $cat->id)->get();
+            } else {
+                $sub_categories = WomenCategory::where('parent_id', $cat->id)->get();
+            }
             foreach($sub_categories as $sub_cat) {
                 $categories_dropdown .= "<option value = '" . $sub_cat->id . "'>&nbsp;--&nbsp;" . $sub_cat->name . "</option>";
             }
         }
 
-        return view('admin.createProductForm', ['categories' => $categories ])->with(compact('categories_dropdown'));
+        return view('admin.createProductForm', ['categories' => $categories ])->with(compact('categories_dropdown', 'brands'));
     }
 
 

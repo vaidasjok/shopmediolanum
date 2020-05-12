@@ -28,10 +28,10 @@
 					@foreach($cartItems->items as $item)
 					<tr>
 						<td class="cart_product">
-							<a href="/product/{{ $item['data']->id }}"><img src="{{Storage::disk('local')->url('product_images/' . $item['data']['image'])}}" height="70" alt=""></a>
+							<a href="/{{ App::getLocale() }}/product/{{ $item['data']->id }}"><img src="{{Storage::disk('local')->url('product_images/' . $item['data']['image'])}}" height="70" alt=""></a>
 						</td>
 						<td class="cart_description">
-							<h4><a href="/product/{{ $item['data']->id }}">{{$item['data']['name']}}</a></h4>
+							<h4><a href="/{{ App::getLocale() }}/product/{{ $item['data']->id }}">{{$item['data']['name']}}</a></h4>
 							<p>{{$item['data']['description']}} - {{$item['data']['type']}}</p>
 							<p>id: {{$item['data']['id']}} - {{$item['attribute_id']}}</p>
 						</td>

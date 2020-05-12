@@ -86,7 +86,7 @@ Route::get('/men/clothing', ['uses' => 'ProductsController@showMenClothingPage',
 
 Route::get('men/accessoiries', ['uses' => 'ProductsController@showMenAccessoiriesPage', 'as' => 'showMenAccessoiriesPage']);
 
-Route::get('men/parfumes', ['uses' => 'ProductsController@showMenParfumesPage', 'as' => 'showMenParfumesPage']);
+Route::get('men/perfumes', ['uses' => 'ProductsController@showMenParfumesPage', 'as' => 'showMenParfumesPage']);
 
 Route::get('women/shoes', ['uses' => 'ProductsController@showWomenShoesPage', 'as' => 'showWomenShoesPage']);
 
@@ -94,7 +94,7 @@ Route::get('women/clothing', ['uses' => 'ProductsController@showWomenClothingPag
 
 Route::get('women/accessoiries', ['uses' => 'ProductsController@showWomenAccessoiriesPage', 'as' => 'showWomenAccessoiriesPage']);
 
-Route::get('women/parfumes', ['uses' => 'ProductsController@showWomenParfumesPage', 'as' => 'showWomenParfumesPage']);
+Route::get('women/perfumes', ['uses' => 'ProductsController@showWomenParfumesPage', 'as' => 'showWomenParfumesPage']);
 
 // });
 
@@ -210,6 +210,15 @@ Route::match(['get', 'post'], '/admin/frontend-images', ['uses' => 'Admin\Fronte
 Route::get('admin/delete-image/{id}', ['uses' => 'Admin\FrontendImagesController@frontend_delete_image', 'as' => 'frontend_delete_image']);
 
 Route::get('admin/enable-image/{id}', ['uses' => 'Admin\FrontendImagesController@enableImage', 'as' => 'enableImage']);
+
+
+//BRANDS
+Route::match(['get', 'post'], '/admin/add-brand', ['uses' => 'Admin\BrandController@add_brand', 'as' => 'add_brand']);
+
+Route::get('admin/delete-brand/{id}', ['uses' => 'Admin\BrandController@delete_brand', 'as' => 'delete_brand']);
+
+Route::match(['get', 'post'], '/admin/edit-brand/{id}', ['uses' => 'Admin\BrandController@edit_brand', 'as' => 'edit_brand']);
+
 
 
 }); //end Route::group

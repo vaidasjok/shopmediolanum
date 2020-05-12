@@ -23,7 +23,7 @@
 						<h2>Category</h2>
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							@foreach($categories as $category)
-							@if(count($category->categories) > 0)
+							{{--@if(count($category->women_categories) > 0) --}}
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
@@ -36,9 +36,27 @@
 								<div id="{{$category->name}}" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											@foreach($category->categories as $subcat)
-											<li><a href="/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
+											{{--
+											@foreach($category->women_categories as $subcat)
+											<li><a href="/{{ App::getLocale() }}/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
 											@endforeach
+											--}}
+
+											@if($category->women_categories != null)
+											@if(count($category->women_categories) > 0)
+											@foreach($category->women_categories as $subcat)
+											<li><a href="/{{ App::getLocale() }}/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
+											@endforeach
+											@endif
+											@endif
+
+											@if($category->categories != null)
+											@if(count($category->categories) > 0)
+											@foreach($category->categories as $subcat)
+											<li><a href="/{{ App::getLocale() }}/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
+											@endforeach
+											@endif
+											@endif
 <!-- 											----
 											<li><a href="">Nike </a></li>
 											<li><a href="">Under Armour </a></li>
@@ -49,7 +67,7 @@
 									</div>
 								</div>
 							</div>
-							@endif
+							{{-- @endif --}}
 							@endforeach
 						</div><!--/category-productsr-->
 					
@@ -103,7 +121,7 @@
 												<h2>{{$product->price}}</h2>
 												<p>{{$product->name}}</p>
 												<!-- <a href="{{route('addToCartProduct', ['id' => $product->id])}}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a> -->
-												<a href="/product/{{ $product->id }}" class="ajaxGET-atjungta btn btn-default add-to-cart">
+												<a href="/{{ App::getLocale() }}/product/{{ $product->id }}" class="ajaxGET-atjungta btn btn-default add-to-cart">
 													<div class="url" style="display: none;">{{route('addToCartAjaxGet', ['id' => $product->id])}}</div>
 													<!-- <i class="fa fa-shopping-cart"> --></i>View</a>
 											</div>

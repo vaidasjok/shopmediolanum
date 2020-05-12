@@ -8,6 +8,8 @@ use App\Product;
 use App\ProductAttribute;
 use App\Category;
 use App\WomenCategory;
+use App\CategoryTranslation;
+use App\WomenCategoryTranslation;
 use App\Type;
 use App\Cart;
 use App\ProductsImage;
@@ -44,7 +46,7 @@ class ProductsController extends Controller
     {
         // dd($request->getRequestUri());
         $active_type = Type::where('is_active', 1)->first();
-        $shoe_category_id = Category::where('name', 'shoes')->first()->id;
+        $shoe_category_id = CategoryTranslation::where('name', 'shoes')->first()->category_id;
 
         //get list of shoe category and child categories ids for products
         $shoe_categories_ids = Category::where('parent_id', $shoe_category_id)->pluck('id')->toArray();
@@ -67,7 +69,7 @@ class ProductsController extends Controller
     {
 
         $active_type = Type::where('is_active', 1)->first();
-        $clothing_category_id = Category::where('name', 'Clothing')->first()->id;
+        $clothing_category_id = CategoryTranslation::where('name', 'Clothing')->first()->category_id;
 
         //get list of shoe category and child categories ids for products
         $clothing_categories_ids = Category::where('parent_id', $clothing_category_id)->pluck('id')->toArray();
@@ -88,7 +90,7 @@ class ProductsController extends Controller
     public function showMenAccessoiriesPage()
     {
         $active_type = Type::where('is_active', 1)->first();
-        $accessoiries_category_id = Category::where('name', 'Accessoiries')->first()->id;
+        $accessoiries_category_id = CategoryTranslation::where('name', 'Accessoiries')->first()->category_id;
 
         //get list of shoe category and child categories ids for products
         $accessoiries_categories_ids = Category::where('parent_id', $accessoiries_category_id)->pluck('id')->toArray();
@@ -108,7 +110,7 @@ class ProductsController extends Controller
     public function showMenParfumesPage()
     {
         $active_type = Type::where('is_active', 1)->first();
-        $parfumes_category_id = Category::where('name', 'Parfumes')->first()->id;
+        $parfumes_category_id = CategoryTranslation::where('name', 'Perfumes')->first()->category_id;
 
         //get list of shoe category and child categories ids for products
         $parfumes_categories_ids = Category::where('parent_id', $parfumes_category_id)->pluck('id')->toArray();
@@ -128,12 +130,12 @@ class ProductsController extends Controller
     public function showWomenClothingPage()
     {
         $active_type = Type::where('is_active', 1)->first();
-        $clothes_category_id = Category::where('name', 'clothing')->first()->id;
+        $clothes_category_id = WomenCategoryTranslation::where('name', 'clothing')->first()->women_category_id;
 
         //get list of shoe category and child categories ids for products
         $clothes_categories_ids = Category::where('parent_id', $clothes_category_id)->pluck('id')->toArray();
 
-        $categories = Category::with('categories')->where('id', $clothes_category_id)->get();
+        $categories = WomenCategory::with('women_categories')->where('id', $clothes_category_id)->get();
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
@@ -148,12 +150,12 @@ class ProductsController extends Controller
     public function showWomenAccessoiriesPage()
     {
         $active_type = Type::where('is_active', 1)->first();
-        $accessoiries_category_id = Category::where('name', 'accessoiries')->first()->id;
+        $accessoiries_category_id = WomenCategoryTranslation::where('name', 'accessoiries')->first()->women_category_id;
 
         //get list of shoe category and child categories ids for products
         $accessoiries_categories_ids = Category::where('parent_id', $accessoiries_category_id)->pluck('id')->toArray();
 
-        $categories = Category::with('categories')->where('id', $accessoiries_category_id)->get();
+        $categories = WomenCategory::with('women_categories')->where('id', $accessoiries_category_id)->get();
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
@@ -168,12 +170,12 @@ class ProductsController extends Controller
     public function showWomenParfumesPage()
     {
         $active_type = Type::where('is_active', 1)->first();
-        $parfumes_category_id = Category::where('name', 'parfumes')->first()->id;
+        $parfumes_category_id = WomenCategoryTranslation::where('name', 'perfumes')->first()->women_category_id;
 
         //get list of shoe category and child categories ids for products
         $parfumes_categories_ids = Category::where('parent_id', $parfumes_category_id)->pluck('id')->toArray();
 
-        $categories = Category::with('categories')->where('id', $parfumes_category_id)->get();
+        $categories = WomenCategory::with('women_categories')->where('id', $parfumes_category_id)->get();
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
@@ -188,13 +190,14 @@ class ProductsController extends Controller
     public function showWomenShoesPage()
     {
         $active_type = Type::where('is_active', 1)->first();
-        $shoe_category_id = WomenCategory::where('name', 'shoes')->first()->id;
+        $shoe_category_id = WomenCategoryTranslation::where('name', 'shoes')->first()->women_category_id;
 
         //get list of shoe category and child categories ids for products
         $shoe_categories_ids = WomenCategory::where('parent_id', $shoe_category_id)->pluck('id')->toArray();
 
-        $categories = WomenCategory::with('categories')->where('id', $shoe_category_id)->get();
-        // print_r($shoe_categories_ids); die;
+        $categories = WomenCategory::with('women_categories')->where('id', $shoe_category_id)->get();
+        // dd($categories);
+        // print_r($categories); die;
 
         if($active_type->type == 'men') {
             $products = Product::where('type' ,'men')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(3);
@@ -217,7 +220,7 @@ class ProductsController extends Controller
             $category_id = WomenCategory::where('url', $url)->first()->id;
 
             $parent_category_id = WomenCategory::where('url', $url)->first()->parent_id;
-            $categories = WomenCategory::with('categories')->where('id', $parent_category_id)->get();
+            $categories = WomenCategory::with('women_categories')->where('id', $parent_category_id)->get();
         } else {
             $category_id = Category::where('url', $url)->first()->id;
 

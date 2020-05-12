@@ -23,7 +23,9 @@
 						<h2>Category</h2>
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							@foreach($categories as $category)
-							@if(count($category->categories) > 0)
+							{{--@if($category->women_categories != null)--}}
+							{{--@if(count($category->women_categories) > 0)--}}
+
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
@@ -36,9 +38,21 @@
 								<div id="{{$category->name}}" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
+											@if($category->women_categories != null)
+											@if(count($category->women_categories) > 0)
+											@foreach($category->women_categories as $subcat)
+											<li><a href="/{{ App::getLocale() }}/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
+											@endforeach
+											@endif
+											@endif
+
+											@if($category->categories != null)
+											@if(count($category->categories) > 0)
 											@foreach($category->categories as $subcat)
 											<li><a href="/{{ App::getLocale() }}/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
 											@endforeach
+											@endif
+											@endif
 <!-- 											----
 											<li><a href="">Nike </a></li>
 											<li><a href="">Under Armour </a></li>
@@ -49,7 +63,8 @@
 									</div>
 								</div>
 							</div>
-							@endif
+							{{--@endif--}}
+							{{--@endif--}}
 							@endforeach
 						</div><!--/category-productsr-->
 					

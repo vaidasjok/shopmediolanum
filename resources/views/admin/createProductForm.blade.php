@@ -18,7 +18,7 @@
 
     <h2>Create New Product</h2>
 
-    <form action="/admin/sendCreateProductForm" method="post" enctype="multipart/form-data">
+    <form action="/{{ App::getLocale() }}/admin/sendCreateProductForm" method="post" enctype="multipart/form-data">
 
         {{csrf_field()}}
 
@@ -50,11 +50,21 @@
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="type">Category</label>
+        <div class="form-group" >
+            <label for="type" id="category_id_label">Category</label>
             <select name="category_id" id="category_id" class="form-control">
-                <?php //echo $categories_dropdown; ?>
+                <?php echo $categories_dropdown; ?>
                 
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="brand">Brand</label>
+            <select class="form-control" name="brand_id" id="brand_id" required>
+                <option value="">-- Select Brand</option>
+                @foreach($brands as $brand)
+                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                @endforeach
             </select>
         </div>
 
@@ -75,6 +85,7 @@
     $(document).ready(function() {
         var type = $(this).value = "";
         $('#category_id').hide();
+        $('#category_id_label').hide();
         $('#type').change(function() {
             type = $('#type option:selected').val();
             if(type != "") {
@@ -82,7 +93,7 @@
 
                 $.ajax({
                     method: "GET",
-                    url: '/admin/get-categories-for-new-product',
+                    url: '/{{ App::getLocale() }}/admin/get-categories-for-new-product',
                     data: {_token: _token, type: type},
                     success: function(data, status, XHR) {
                         // alert(data.totalQuantity);
@@ -91,6 +102,7 @@
                         }
                         
                         $('#category_id').show();
+                        $('#category_id_label').show();
                     },
                     error: function(xhr, status, error) {
                         alert(error);
@@ -99,6 +111,7 @@
                 
             } else {
                  $('#category_id').hide();
+                 $('#category_id_label').hide();
             }
             console.log(type);
         });

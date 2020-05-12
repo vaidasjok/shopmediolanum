@@ -115,7 +115,7 @@
 								<p>Product Code: {{ $product->id }}</p>
 								<p>
 									<select name="size" id="selSize" style="width: 150px;">
-										<option value="">Select Size</option>
+										<option value="">{{ __('Select Size') }}</option>
 										@foreach($product->attributes as $attr)
 										<option value="{{$product->id}}-{{$attr->size}}-{{$attr->id}}">{{$attr->size}}</option>
 										@endforeach

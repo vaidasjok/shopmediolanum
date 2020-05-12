@@ -11,20 +11,26 @@
 	</div>
 	<div class="row-two" style="display: flex; ">
 		<div class="two">
+			@if(isset($image_two_one))
 			@if($image_two_one->link !== '') <a href="{{$image_two_one->link}}"> @endif
 			 	<img style="margin: 0 auto; display: block;" src="{{Storage::disk('local')->url('frontend_images/' . $image_two_one->image)}}" alt="">
 			@if($image_two_one->link != "") </a> @endif
+			@endif
 		</div>
 		<div class="two second">
+			@if(isset($image_two_two))
 			@if($image_two_two->link !== '') <a href="{{$image_two_two->link}}"> @endif
 				<img style="margin: 0 auto; display: block;" src="{{Storage::disk('local')->url('frontend_images/' . $image_two_two->image)}}" alt="">
 			@if($image_two_two->link != "") </a> @endif
+			@endif
 		</div>
 	</div>
 	<div class="row-three">
+		@if(isset($image_three))
 		@if($image_three->link !== '') <a href="{{$image_three->link}}"> @endif
 			<img style="margin: 0 auto; display: block;" src="{{Storage::disk('local')->url('frontend_images/' . $image_three->image)}}" alt="">
 		@if($image_three->link != "") </a> @endif
+		@endif
 	</div>
 
 	

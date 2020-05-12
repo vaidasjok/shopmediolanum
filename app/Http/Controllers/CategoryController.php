@@ -20,7 +20,7 @@ class CategoryController extends Controller
     		$category->url = $request->input('url');
     		$category->parent_id = $request->input('parent_id');
     		$category->save();
-    		return redirect('admin/view-categories')->with('success', 'Category Added Successfully!');
+    		return redirect(route('viewCategories'))->with('success', 'Category Added Successfully!');
     	}
     	$levels = Category::where('parent_id', 0)->get();
     	return view('admin.categories.add_category')->with('levels', $levels);
@@ -37,7 +37,7 @@ class CategoryController extends Controller
             $category->url = $request->input('url');
             $category->parent_id = $request->input('parent_id');
             $category->save();
-            return redirect('admin/view-women-categories')->with('success', 'Category Added Successfully!');
+            return redirect(route('viewWomenCategories'))->with('success', 'Category Added Successfully!');
         }
         $levels = WomenCategory::where('parent_id', 0)->get();
         return view('admin.categories.add_women_category')->with('levels', $levels);
@@ -90,6 +90,7 @@ class CategoryController extends Controller
     public function viewWomenCategories()
     {
         $categories = WomenCategory::all();
+        // echo json_decode(json_encode($categories)); die;
         return view('admin.categories.view_women_categories', ['categories' => $categories]);
     }
 
