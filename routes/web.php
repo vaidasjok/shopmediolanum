@@ -51,10 +51,10 @@ Route::get('produtcs/addtocart/{id}', ['uses' => 'ProductsController@addProductT
 Route::get('cart', ['uses' => 'ProductsController@showCart', 'as' => 'cartProducts']);
 
 //delete item from cart
-Route::get('produtcs/deleteItemFromCart/{id}', ['uses' => 'ProductsController@deleteItemFromCart', 'as' => 'deleteItemFromCart']);
+Route::get('produtcs/deleteItemFromCart/{attribute_id}', ['uses' => 'ProductsController@deleteItemFromCart', 'as' => 'deleteItemFromCart']);
 
 //increase single product
-Route::get('product/increaseSingleProduct/{id}', ['uses' => 'ProductsController@increaseSingleProduct', 'as' => 'increaseSingleProduct']);
+Route::get('product/increaseSingleProduct/{attribute_id}', ['uses' => 'ProductsController@increaseSingleProduct', 'as' => 'increaseSingleProduct']);
 
 
 //decrease single product

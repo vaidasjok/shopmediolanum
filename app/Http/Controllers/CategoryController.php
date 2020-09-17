@@ -100,6 +100,12 @@ class CategoryController extends Controller
 
     	return redirect(route('viewCategories'))->withSuccess('Category deleted successfully!');
     }
+    public function deleteWomenCategory($id) 
+    {
+        WomenCategory:: find($id)->delete();
+
+        return redirect(route('viewWomenCategories'))->withSuccess('Category deleted successfully!');
+    }
 
     
 }

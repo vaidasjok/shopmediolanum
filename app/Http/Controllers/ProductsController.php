@@ -233,9 +233,9 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->where('category_id', $category_id)->where('enabled', 1)->paginate(3);
+            $products = Product::where('type' ,'men')->where('category_id', $category_id)->where('enabled', 1)->paginate(9);
         } else {
-            $products = Product::where('type', 'women')->where('category_id', $category_id)->where('enabled', 1)->paginate(3);
+            $products = Product::where('type', 'women')->where('category_id', $category_id)->where('enabled', 1)->paginate(9);
         }
         $type = $active_type->type;
         return view('type_category_products', compact('products', 'categories', 'type'));

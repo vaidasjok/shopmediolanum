@@ -72,11 +72,11 @@
 				
 				<div class="col-sm-9 padding-right">
 					<div class="product-details"><!--product-details-->
-						<div class="col-sm-5">
+						<div class="col-sm-6">
 							<div class="view-product">
 								<div class="easyzoom easyzoom--overlay easyzoom--with-thumbnails">
 									<a href="{{asset ('storage')}}/product_images/{{$product['image']}}">
-										<img style="width: 300px;" class="mainImage" src="{{asset ('storage')}}/product_images/{{$product['image']}}" alt="" />
+										<img style="width: 500px; max-width: 100%" class="mainImage" src="{{asset ('storage')}}/product_images/{{$product['image']}}" alt="" />
 									</a>
 								</div>
 
@@ -107,7 +107,7 @@
 							</div>
 
 						</div>
-						<div class="col-sm-7">
+						<div class="col-sm-6">
 							<div id="getLang">{{ App::getLocale() }}</div>
 							<div class="product-information"><!--/product-information-->
 								<img src="/images/product-details/new.jpg" class="newarrival" alt="" />
@@ -150,7 +150,7 @@
 						<div class="tab-content">
 							<div class="tab-pane fade active in" id="details" >
 								<div class="description-wrapper">
-									{{ $product->description }}
+									{!! nl2br(e($product->description)) !!}
 								</div>
 							</div>
 							
@@ -187,7 +187,7 @@
 													<img style="" src="{{asset ('storage')}}/product_images/{{$item->image}}" alt="" />
 													<h2>€ {{ $item->price }}</h2>
 													<p>{{ $item->name }}</p>
-													<a href="/product/{{ $item->id}}" class="btn btn-default add-to-cart">View</a>
+													<a href="/{{ App::getLocale() }}/product/{{ $item->id}}" class="btn btn-default add-to-cart">View</a>
 												</div>
 											</div>
 										</div>
