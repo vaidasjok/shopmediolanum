@@ -88,7 +88,7 @@
 						<li><a class="sale-link" href="#">{{ __('Sale') }}</a></li>
 						<li><a href="/{{ App::getLocale() }}/{{ $type }}/clothing">{{ __('Clothing') }}</a></li>
 						<li><a href="/{{ App::getLocale() }}/{{ $type }}/shoes">{{ __('Shoes') }}</a></li>
-						<li><a href="/{{ App::getLocale() }}/{{ $type }}/accessoiries">{{ __('Accessoiries') }}</a></li>
+						<li><a href="/{{ App::getLocale() }}/{{ $type }}/accessoiries">{{ __('Accessories') }}</a></li>
 						<li><a href="/{{ App::getLocale() }}/{{ $type }}/perfumes">{{ __('Perfumes') }}</a></li>
 					</ul>
 

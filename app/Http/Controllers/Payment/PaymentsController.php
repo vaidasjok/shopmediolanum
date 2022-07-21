@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Cart;
 use App\Type;
+use App\Country;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,12 +38,19 @@ class PaymentsController extends Controller
 
         $payment_info = Session::get('payment_info');
         $type = Type::where('is_active', 1)->first()->type;
+        $country = $payment_info['country'];
+        // dd($payment_info['country']);
+
             //has not paied
             if($payment_info['status'] == 'on_hold'){
-                return view('payment.paymentpage',['payment_info'=> $payment_info, 'type' => $type]);
+                return view('payment.paymentpage',['payment_info' => $payment_info, 'type' => $type, 'country' => $country]);
              
             } else {
-                 return redirect()->route("allProducts");
+                if($type == 'men') {
+                    return redirect()->route("showMenShoesPage");
+                } else {
+                    return redirect()->route("showWomenShoesPage");
+                }
             }
 
     }
@@ -102,10 +110,14 @@ class PaymentsController extends Controller
 
              return view('payment.paymentreceipt',['payment_receipt' => $payment_receipt]);
 
-        }else{
+        } else {
 
-
-               return redirect()->route("allProducts");
+                $type = Type::where('is_active', 1)->first()->type;
+                if($type == 'men') {
+                    return redirect()->route("showMenShoesPage");
+                } else {
+                    return redirect()->route("showWomenShoesPage");
+                }
 
         }
 
@@ -187,7 +199,12 @@ class PaymentsController extends Controller
             return view('cartproducts',['cartItems'=> $cart]);
          //cart is empty
         }else{
-            return redirect()->route("allProducts");
+            $type = Type::where('is_active', 1)->first()->type;
+            if($type == 'men') {
+                return redirect()->route("showMenShoesPage");
+            } else {
+                return redirect()->route("showWomenShoesPage");
+            }
         }
 
     }
@@ -212,6 +229,9 @@ class PaymentsController extends Controller
 
         $first_name = $request->input('first_name');
         $address = $request->input('address');
+        // $country = $request->input('country');
+        $country = Country::where('country_id', '=', $request->input('country'))->first()->value;
+        // dd($country);
         $last_name = $request->input('last_name');
         $zip = $request->input('zip');
         $phone = $request->input('phone');
@@ -221,7 +241,7 @@ class PaymentsController extends Controller
         if($cart) {
             // dd($cart);
             $date = date('Y-m-d H:i:s');
-            $newOrderArray = array("status" => "on_hold", "date" => $date, "del_date" => $date, "price" => $cart->totalPrice, 'first_name' => $first_name, 'address' => $address, 'last_name' => $last_name, 'zip' => $zip, 'phone' => $phone, 'email' => $email);
+            $newOrderArray = array("status" => "on_hold", "date" => $date, "del_date" => $date, "price" => $cart->totalPrice, 'first_name' => $first_name, 'address' => $address, 'country' => $country, 'last_name' => $last_name, 'zip' => $zip, 'phone' => $phone, 'email' => $email);
             $createdOrder = DB::table('orders')->insert($newOrderArray);
             $order_id = DB::getPdo()->LastInsertId();
 
@@ -229,7 +249,10 @@ class PaymentsController extends Controller
                 $item_id = $cart_item['data']['id'];
                 $item_name = $cart_item['data']['name'];
                 $item_price = $cart_item['data']['price'];
-                $newItemsInCurrentOrder = array('item_id' => $item_id, 'order_id' => $order_id, 'item_name' => $item_name, 'item_price' => $item_price);
+                $item_quantity = $cart_item['quantity'];
+                $item_size = $cart_item['size'];
+                // reikia prideti kieki 
+                $newItemsInCurrentOrder = array('item_id' => $item_id, 'order_id' => $order_id, 'item_name' => $item_name, 'item_price' => $item_price, 'quantity' => $item_quantity, 'size' => $item_size);
                 $createdOrderItems = DB::table('order_items')->insert($newItemsInCurrentOrder);
             }
 
@@ -243,7 +266,12 @@ class PaymentsController extends Controller
             // print_r($newOrderArray);
             return redirect()->route('showPaymentPage');
         } else {
-            return redirect()->route('allProducts');
+            $type = Type::where('is_active', 1)->first()->type;
+            if($type == 'men') {
+                return redirect()->route("showMenShoesPage");
+            } else {
+                return redirect()->route("showWomenShoesPage");
+            }
         }
     }
 

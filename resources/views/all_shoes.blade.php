@@ -49,7 +49,7 @@
 											@if($category->categories != null)
 											@if(count($category->categories) > 0)
 											@foreach($category->categories as $subcat)
-											<li><a href="/{{ App::getLocale() }}/{{ $type }}/{{$subcat->url}}">{{$subcat->name}} </a></li>
+											<li><a href="/{{ App::getLocale() }}/{{ $type }}/{{$subcat->url}}@if(request()->has('brand_id'))?brand_id={{ request()->get('brand_id') }}@endif">{{$subcat->name}} </a></li>
 											@endforeach
 											@endif
 											@endif
@@ -72,13 +72,11 @@
 							<h2>Brands</h2>
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
-									<li><a href="?well=ok"> <span class="pull-right">(50)</span>Acne</a></li>
-									<li><a href="?notwell=notok"> <span class="pull-right">(56)</span>Grüne Erde</a></li>
-									<li><a href=""> <span class="pull-right">(27)</span>Albiro</a></li>
-									<li><a href=""> <span class="pull-right">(32)</span>Ronhill</a></li>
-									<li><a href=""> <span class="pull-right">(5)</span>Oddmolly</a></li>
-									<li><a href=""> <span class="pull-right">(9)</span>Boudestijn</a></li>
-									<li><a href=""> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
+									@foreach($brands as $brand)
+										@if($brand->number_of_products != 0)
+										<li><a href="?brand_id={{$brand->id}}"> <span class="pull-right">({{$brand->number_of_products}})</span>{{$brand->name}}</a></li>
+										@endif
+									@endforeach
 								</ul>
 							</div>
 						</div><!--/brands_products-->
@@ -86,8 +84,9 @@
 
 						
 						<div class="shipping text-center"><!--shipping-->
-							<img src="images/home/shipping.jpg" alt="" />
+							<img src="/images/home/shipping.jpg" alt="" />
 						</div><!--/shipping-->
+						<br>
 						
 					</div>
 				</div>
@@ -104,9 +103,12 @@
 								<div class="single-products">
 										<div class="productinfo text-center">
 											{{ csrf_field() }}
-											<img src="{{Storage::disk('local')->url('product_images/' . $product->image)}}" alt="" />
+											<img src="{{Storage::disk('local')->url('product_images/large/' . $product->image)}}" alt="" />
 											<h2>{{number_format($product->price, 0)}} €</h2>
 											<p>{{$product->name}}</p>
+											@if($product->brand->name)
+											<p style="font-size:90%;">{{$product->brand->name}}</p>
+											@endif
 											<a href="#" class="btn btn-default add-to-cart"><!-- <i class="fa fa-shopping-cart"></i> --><!-- Add to cart -->View</a>
 										</div>
 										<div class="product-overlay">
@@ -134,7 +136,7 @@
 						@endforeach
 
 					</div><!--features_items-->
-					{{ $products->links() }}
+					{{ $products->appends(request()->input())->links() }}
 					<!-- <ul class="pagination">
 						<li class="active"><a href="">1</a></li>
 						<li><a href="">2</a></li>

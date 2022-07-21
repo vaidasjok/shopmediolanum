@@ -1,0 +1,8 @@
+
+@font-face {
+  font-family: 'GalaxiePolaris-Heavy';
+  src: url('GalaxiePolaris-Heavy.eot?#iefix') format('embedded-opentype'),  url('GalaxiePolaris-Heavy.otf')  format('opentype'),
+	     url('GalaxiePolaris-Heavy.woff') format('woff'), url('GalaxiePolaris-Heavy.ttf')  format('truetype'), url('GalaxiePolaris-Heavy.svg#GalaxiePolaris-Heavy') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

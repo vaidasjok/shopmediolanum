@@ -75,8 +75,8 @@
 						<div class="col-sm-6">
 							<div class="view-product">
 								<div class="easyzoom easyzoom--overlay easyzoom--with-thumbnails">
-									<a href="{{asset ('storage')}}/product_images/{{$product['image']}}">
-										<img style="width: 500px; max-width: 100%" class="mainImage" src="{{asset ('storage')}}/product_images/{{$product['image']}}" alt="" />
+									<a href="{{asset ('storage')}}/product_images/large/{{$product['image']}}">
+										<img style="width: 500px; max-width: 100%" class="mainImage" src="{{asset ('storage')}}/product_images/large/{{$product['image']}}" alt="" />
 									</a>
 								</div>
 
@@ -184,7 +184,11 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													<img style="" src="{{asset ('storage')}}/product_images/{{$item->image}}" alt="" />
+													@if(Storage::disk('local')->exists(asset ('storage') . '/product_images/small/' . $item->image))
+													<img style="" src="{{asset ('storage')}}/product_images/small/{{$item->image}}" alt="" />
+													@else
+													<img style="" src="{{asset ('storage')}}/product_images/large/{{$item->image}}" alt="" />
+													@endif
 													<h2>€ {{ $item->price }}</h2>
 													<p>{{ $item->name }}</p>
 													<a href="/{{ App::getLocale() }}/product/{{ $item->id}}" class="btn btn-default add-to-cart">View</a>

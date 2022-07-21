@@ -111,7 +111,7 @@
 								<div class="single-products">
 										<div class="productinfo text-center">
 											{{ csrf_field() }}
-											<img src="{{Storage::disk('local')->url('product_images/' . $product->image)}}" alt="" />
+											<img src="{{Storage::disk('local')->url('product_images/large/' . $product->image)}}" alt="" />
 											<h2>{{$product->price}}</h2>
 											<p>{{$product->name}}</p>
 											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>

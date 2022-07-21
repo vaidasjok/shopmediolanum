@@ -12,11 +12,13 @@ use App\CategoryTranslation;
 use App\WomenCategoryTranslation;
 use App\Type;
 use App\Cart;
+use App\Brand;
 use App\ProductsImage;
 use App\Coupon;
 use Session;
 use Illuminate\Support\Fasades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductsController extends Controller
 {
@@ -55,17 +57,37 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(12);
+            }
+            
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(12);
+            }
         }
         $type = $active_type->type;
+
+        $brands = DB::table('brands')->join('products', 'products.brand_id', '=', 'brands.id')
+            ->where('products.enabled', 1)
+            ->whereIn('category_id', $shoe_categories_ids)
+            ->where('products.type', 'men')
+            ->groupBy(['brands.id', 'brands.name'])
+            ->get(['brands.id', 'brands.name', DB::raw('count(products.id) as number_of_products')]);
+        if($request->has('brand_id')) {
+            $brands->where('products.brand_id', $request->get('brand_id'));
+        }
+        // dd($brands->first()->products()->count());
         // dd($type);
-        return view('all_shoes', compact('products', 'categories', 'type'));
+        return view('all_shoes', compact('products', 'categories', 'type', 'brands'));
 
     }
 
-    public function showMenClothingPage()
+    public function showMenClothingPage(Request $request)
     {
 
         $active_type = Type::where('is_active', 1)->first();
@@ -78,19 +100,39 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $clothing_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $clothing_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $clothing_categories_ids)->where('enabled', 1)->paginate(12);
+            }
+            
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $clothing_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $clothing_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $clothing_categories_ids)->where('enabled', 1)->paginate(12);
+            }
         }
         $type = $active_type->type;
-        return view('all_shoes', compact('products', 'categories', 'type'));
+
+        $brands = DB::table('brands')->join('products', 'products.brand_id', '=', 'brands.id')
+            ->where('products.enabled', 1)
+            ->whereIn('category_id', $clothing_categories_ids)
+            ->where('products.type', 'men')
+            ->groupBy(['brands.id', 'brands.name'])
+            ->get(['brands.id', 'brands.name', DB::raw('count(products.id) as number_of_products')]);
+        if($request->has('brand_id')) {
+            $brands->where('products.brand_id', $request->get('brand_id'));
+        }
+
+        return view('all_shoes', compact('products', 'categories', 'type', 'brands'));
         // return view('all_clothes');
     }
 
-    public function showMenAccessoiriesPage()
+    public function showMenAccessoiriesPage(Request $request)
     {
         $active_type = Type::where('is_active', 1)->first();
-        $accessoiries_category_id = CategoryTranslation::where('name', 'Accessoiries')->first()->category_id;
+        $accessoiries_category_id = CategoryTranslation::where('name', 'Accessories')->first()->category_id;
 
         //get list of shoe category and child categories ids for products
         $accessoiries_categories_ids = Category::where('parent_id', $accessoiries_category_id)->pluck('id')->toArray();
@@ -99,15 +141,36 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+            }
+            
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+            }
         }
         $type = $active_type->type;
-        return view('all_shoes', compact('products', 'categories', 'type'));
+        // $brands = Brand::with('products')->whereHas('products', function($query) use ($accessoiries_categories_ids) {
+        //     $query->where('type', '=', 'men')->where('enabled', '=', 1)->whereIn('category_id', $accessoiries_categories_ids);
+        // })->get();
+        $brands = DB::table('brands')->join('products', 'products.brand_id', '=', 'brands.id')
+            ->where('products.enabled', 1)
+            ->whereIn('category_id', $accessoiries_categories_ids)
+            ->where('products.type', 'men')
+            ->groupBy(['brands.id', 'brands.name'])
+            ->get(['brands.id', 'brands.name', DB::raw('count(products.id) as number_of_products')]);
+        if($request->has('brand_id')) {
+            $brands->where('products.brand_id', $request->get('brand_id'));
+        }
+        return view('all_shoes', compact('products', 'categories', 'type', 'brands'));
     }
 
-    public function showMenParfumesPage()
+    public function showMenParfumesPage(Request $request)
     {
         $active_type = Type::where('is_active', 1)->first();
         $parfumes_category_id = CategoryTranslation::where('name', 'Perfumes')->first()->category_id;
@@ -119,15 +182,36 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+            }
+            
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+            }
         }
         $type = $active_type->type;
-        return view('all_shoes', compact('products', 'categories', 'type'));
+        // $brands = Brand::with('products')->whereHas('products', function($query) use ($parfumes_categories_ids) {
+        //     $query->where('type', '=', 'men')->where('enabled', '=', 1)->whereIn('category_id', $parfumes_categories_ids);
+        // })->get();
+        $brands = DB::table('brands')->join('products', 'products.brand_id', '=', 'brands.id')
+            ->where('products.enabled', 1)
+            ->whereIn('category_id', $parfumes_categories_ids)
+            ->where('products.type', 'men')
+            ->groupBy(['brands.id', 'brands.name'])
+            ->get(['brands.id', 'brands.name', DB::raw('count(products.id) as number_of_products')]);
+        if($request->has('brand_id')) {
+            $brands->where('products.brand_id', $request->get('brand_id'));
+        }
+        return view('all_shoes', compact('products', 'categories', 'type', 'brands'));
     }
 
-    public function showWomenClothingPage()
+    public function showWomenClothingPage(Request $request)
     {
         $active_type = Type::where('is_active', 1)->first();
         $clothes_category_id = WomenCategoryTranslation::where('name', 'clothing')->first()->women_category_id;
@@ -139,15 +223,36 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $clothes_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $clothes_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $clothes_categories_ids)->where('enabled', 1)->paginate(12);
+            }
+            
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $clothes_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $clothes_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $clothes_categories_ids)->where('enabled', 1)->paginate(12);
+            }
         }
         $type = $active_type->type;
-        return view('all_shoes', compact('products', 'categories', 'type'));
+        // $brands = Brand::with('products')->whereHas('products', function($query) use ($clothes_categories_ids) {
+        //     $query->where('type', '=', 'women')->where('enabled', '=', 1)->whereIn('category_id', $clothes_categories_ids);
+        // })->get();
+        $brands = DB::table('brands')->join('products', 'products.brand_id', '=', 'brands.id')
+            ->where('products.enabled', 1)
+            ->whereIn('category_id', $clothes_categories_ids)
+            ->where('products.type', 'women')
+            ->groupBy(['brands.id', 'brands.name'])
+            ->get(['brands.id', 'brands.name', DB::raw('count(products.id) as number_of_products')]);
+        if($request->has('brand_id')) {
+            $brands->where('products.brand_id', $request->get('brand_id'));
+        }
+        return view('all_shoes', compact('products', 'categories', 'type', 'brands'));
     }
 
-    public function showWomenAccessoiriesPage()
+    public function showWomenAccessoiriesPage(Request $request)
     {
         $active_type = Type::where('is_active', 1)->first();
         $accessoiries_category_id = WomenCategoryTranslation::where('name', 'accessoiries')->first()->women_category_id;
@@ -159,15 +264,36 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+            }
+            
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $accessoiries_categories_ids)->where('enabled', 1)->paginate(12);
+            }
         }
         $type = $active_type->type;
-        return view('all_shoes', compact('products', 'categories', 'type'));
+        // $brands = Brand::with('products')->whereHas('products', function($query) use ($accessoiries_categories_ids) {
+        //     $query->where('type', '=', 'women')->where('enabled', '=', 1)->whereIn('category_id', $accessoiries_categories_ids);
+        // })->get();
+        $brands = DB::table('brands')->join('products', 'products.brand_id', '=', 'brands.id')
+            ->where('products.enabled', 1)
+            ->whereIn('category_id', $accessoiries_categories_ids)
+            ->where('products.type', 'women')
+            ->groupBy(['brands.id', 'brands.name'])
+            ->get(['brands.id', 'brands.name', DB::raw('count(products.id) as number_of_products')]);
+        if($request->has('brand_id')) {
+            $brands->where('products.brand_id', $request->get('brand_id'));
+        }
+        return view('all_shoes', compact('products', 'categories', 'type', 'brands'));
     }
 
-    public function showWomenParfumesPage()
+    public function showWomenParfumesPage(Request $request)
     {
         $active_type = Type::where('is_active', 1)->first();
         $parfumes_category_id = WomenCategoryTranslation::where('name', 'perfumes')->first()->women_category_id;
@@ -179,15 +305,36 @@ class ProductsController extends Controller
         // print_r($shoe_categories_ids); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+            }
+            
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $parfumes_categories_ids)->where('enabled', 1)->paginate(12);
+            }
         }
         $type = $active_type->type;
-        return view('all_shoes', compact('products', 'categories', 'type'));
+        // $brands = Brand::with('products')->whereHas('products', function($query) use ($parfumes_categories_ids) {
+        //     $query->where('type', '=', 'women')->where('enabled', '=', 1)->whereIn('category_id', $parfumes_categories_ids);
+        // })->get();
+        $brands = DB::table('brands')->join('products', 'products.brand_id', '=', 'brands.id')
+            ->where('products.enabled', 1)
+            ->whereIn('category_id', $parfumes_categories_ids)
+            ->where('products.type', 'women')
+            ->groupBy(['brands.id', 'brands.name'])
+            ->get(['brands.id', 'brands.name', DB::raw('count(products.id) as number_of_products')]);
+        if($request->has('brand_id')) {
+            $brands->where('products.brand_id', $request->get('brand_id'));
+        }
+        return view('all_shoes', compact('products', 'categories', 'type', 'brands'));
     }
 
-    public function showWomenShoesPage()
+    public function showWomenShoesPage(Request $request)
     {
         $active_type = Type::where('is_active', 1)->first();
         $shoe_category_id = WomenCategoryTranslation::where('name', 'shoes')->first()->women_category_id;
@@ -200,12 +347,35 @@ class ProductsController extends Controller
         // print_r($categories); die;
 
         if($active_type->type == 'men') {
-            $products = Product::where('type' ,'men')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(3);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'men')->with('brand')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(12);
+            }
+            
         } else {
-            $products = Product::where('type', 'women')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(3);
+            if($request->has('brand_id') && $request->get('brand_id') != '') {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->where('brand_id', $request->get('brand_id'))->paginate(12);
+            } else {
+                $products = Product::where('type' ,'women')->with('brand')->whereIn('category_id', $shoe_categories_ids)->where('enabled', 1)->paginate(12);
+            }
+        }
+
+        $type = $active_type->type;
+        // $brands = Brand::with('products')->whereHas('products', function($query) use ($shoe_categories_ids) {
+        //     $query->where('type', '=', 'women')->where('enabled', '=', 1)->whereIn('category_id', $shoe_categories_ids);
+        // })->get();
+        $brands = DB::table('brands')->join('products', 'products.brand_id', '=', 'brands.id')
+            ->where('products.enabled', 1)
+            ->whereIn('category_id', $shoe_categories_ids)
+            ->where('products.type', 'women')
+            ->groupBy(['brands.id', 'brands.name'])
+            ->get(['brands.id', 'brands.name', DB::raw('count(products.id) as number_of_products')]);
+        if($request->has('brand_id')) {
+            $brands->where('products.brand_id', $request->get('brand_id'));
         }
         $type = $active_type->type;
-        return view('all_shoes', compact('products', 'categories', 'type'));
+        return view('all_shoes', compact('products', 'categories', 'type', 'brands'));
 
     }
 
@@ -267,6 +437,7 @@ class ProductsController extends Controller
      //        $newproduct->save();
      //    }
         $active_type = Type::where('is_active', 1)->first();
+        $type = $active_type;
         if($active_type->type == 'men') {
             $categories = Category::where('parent_id', 0)->get();
         } else {
@@ -287,16 +458,19 @@ class ProductsController extends Controller
             $products = Product::where('type', 'women')->where('enabled', 1)->paginate(3);
         }
         
-    	return view('allproducts', compact('products', 'categories'));
+    	return view('allproducts', compact('products', 'categories', 'type'));
     }
 
     
 
     public function menProducts()
     {
-        $products = DB::table('products')->where('type', '=', 'men')->where('enabled', 1)->get();
+        $products = Product::where('type', '=', 'men')->where('enabled', 1)->get();
 
-        return view('menProducts', compact('products'));
+        // dd($products);
+        $type = Type::where('is_active', 1)->first();
+
+        return view('menProducts', compact('products', 'type'));
     }
 
     public function womenProducts()

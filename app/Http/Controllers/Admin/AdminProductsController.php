@@ -44,13 +44,41 @@ class AdminProductsController extends Controller
         }
         
 
-        Validator::make($request->all(), ['image' => 'required|image|mimes:png,jpg,jpeg|max:2000'])->validate(); 
+        Validator::make($request->all(), ['image' => 'required|image|mimes:png,jpg,jpeg|max:5000'])->validate(); 
         $ext = $request->file('image')->getClientOriginalExtension(); //jpg
         $stringImageFormat = str_replace(' ', '', $request->input('name'));
         $imageName = $stringImageFormat . '-' . time() . "." . $ext;
 
         $imageEncoded = File::get($request->image);
-        Storage::disk('local')->put('public/product_images/' . $imageName, $imageEncoded);
+        
+
+        // Storage::disk('local')->put('public/product_images/' . $imageName, $imageEncoded);
+
+        $large_image_path = 'public/product_images/large/' . $imageName;
+        $medium_image_path = 'public/product_images/medium/' . $imageName;
+        $small_image_path = 'public/product_images/small/' . $imageName;
+
+        Storage::disk('local')->put($large_image_path, $imageEncoded);
+        Storage::disk('local')->put($medium_image_path, $imageEncoded);
+        Storage::disk('local')->put($small_image_path, $imageEncoded);
+
+        //resize images
+        $img_large = Image::make($imageEncoded)->resize(900, 900, function($constraint) {
+            $constraint->aspectRatio();
+        }); 
+        Storage::disk('local')->put($large_image_path, $img_large->encode());
+
+        $img_medium = Image::make($imageEncoded)->resize(600, 600, function($constraint) {
+            $constraint->aspectRatio();
+        }); 
+        Storage::disk('local')->put($medium_image_path, $img_medium->encode());
+        // $img_medium->save(Storage::disk('local')->url('app/' . $medium_image_path));
+
+        $img_small = Image::make($imageEncoded)->resize(300, 300, function($constraint) {
+            $constraint->aspectRatio();
+        });
+        Storage::disk('local')->put($small_image_path, $img_small->encode());
+
 
         $newProductArray = array('name' => $name, 'description' => $description, 'brand_id' => $brand_id, 'image' => $imageName, 'type' => $type, 'price' => $price, 'category_id' => $category_id, 'size_and_fit' => $size_and_fit, 'enabled' => $enabled ); 
         // $created = DB::table('products')->insert($newProductArray);
@@ -137,21 +165,65 @@ class AdminProductsController extends Controller
 
     public function updateProductImage(Request $request, $id) 
     {
-        Validator::make($request->all(), ['image' => 'required|image|mimes:png,jpg,jpeg|max:2000'])->validate(); 
+        Validator::make($request->all(), ['image' => 'required|image|mimes:png,jpg,jpeg|max:5000'])->validate(); 
 
         if($request->hasFile('image')) {
             $product = Product::find($id);
-            $exists = Storage::disk('local')->exists('public/product_images/' . $product->image);
 
-            //delete old image
-            if($exists) {
-                Storage::delete('public/product_images/' . $product->image);
+            // dirbu
+            // $ext = $request->file('image')->getClientOriginalExtension(); //jpg
+            $imageOriginalName = str_replace(' ', '', $request->file('image')->getClientOriginalName());
+
+            $new_image_name = time() . "-" . $imageOriginalName;
+
+            $imageEncoded = File::get($request->image);
+
+            $exists_large = Storage::disk('local')->exists('public/product_images/large/' . $product->image);
+            $exists_medium = Storage::disk('local')->exists('public/product_images/medium/' . $product->image);
+            $exists_small = Storage::disk('local')->exists('public/product_images/small/' . $product->image);
+
+            //delete image from folders
+            if($exists_large) {
+                Storage::delete('public/product_images/large/' . $product->image);
+            }
+            if($exists_medium) {
+                Storage::delete('public/product_images/medium/' . $product->image);
+            }
+            if($exists_small) {
+                Storage::delete('public/product_images/small/' . $product->image);
             }
 
-            //upload new image
-            //$ext = $request->file('image')->getClientOriginalExtension(); //jpg
-            $request->image->storeAs('public/product_images/', $product->image);
-            $arrayToUpdate = array('image' => $product->image);
+            $imageName = $product->image;
+
+            $large_image_path = 'public/product_images/large/' . $new_image_name;
+            $medium_image_path = 'public/product_images/medium/' . $new_image_name;
+            $small_image_path = 'public/product_images/small/' . $new_image_name;
+
+            Storage::disk('local')->put($large_image_path, $imageEncoded);
+            Storage::disk('local')->put($medium_image_path, $imageEncoded);
+            Storage::disk('local')->put($small_image_path, $imageEncoded);
+
+            //resize images
+            $img_large = Image::make($imageEncoded)->resize(900, 900, function($constraint) {
+                $constraint->aspectRatio();
+            }); 
+            Storage::disk('local')->put($large_image_path, $img_large->encode());
+
+            $img_medium = Image::make($imageEncoded)->resize(600, 600, function($constraint) {
+                $constraint->aspectRatio();
+            }); 
+            Storage::disk('local')->put($medium_image_path, $img_medium->encode());
+            // $img_medium->save(Storage::disk('local')->url('app/' . $medium_image_path));
+
+            $img_small = Image::make($imageEncoded)->resize(300, 300, function($constraint) {
+                $constraint->aspectRatio();
+            });
+            Storage::disk('local')->put($small_image_path, $img_small->encode());
+
+
+            // dirbu end
+
+            $arrayToUpdate = array('image' => $new_image_name);
             DB::table('products')->where('id', $id)->update($arrayToUpdate);
 
             return redirect()->route('adminDisplayProducts');
@@ -189,7 +261,11 @@ class AdminProductsController extends Controller
                     Storage::disk('local')->put($small_image_path, $imageEncoded);
 
                     //resize images
-                    // $img_large = Image::make($large_image_path)->save($large_image_path);
+                    $img_large = Image::make($file)->resize(900, 900, function($constraint) {
+                        $constraint->aspectRatio();
+                    }); 
+                    Storage::disk('local')->put($large_image_path, $img_large->encode());
+
                     $img_medium = Image::make($file)->resize(600, 600, function($constraint) {
                         $constraint->aspectRatio();
                     }); 
@@ -200,7 +276,6 @@ class AdminProductsController extends Controller
                         $constraint->aspectRatio();
                     });
                     Storage::disk('local')->put($small_image_path, $img_small->encode());
-                    // $img_small->save(Storage::disk('local')->url('app/' . $small_image_path));
 
                     //save to db
                     $image->image = $filename;
@@ -315,12 +390,45 @@ class AdminProductsController extends Controller
     {
         $product = Product::find($id);
 
-        $exists = Storage::disk('local')->exists('public/product_images/' . $product->image);
+        // dirbu
 
-        //delete old image
-        if($exists) {
-            Storage::delete('public/product_images/' . $product->image);
+        $exists_large = Storage::disk('local')->exists('public/product_images/large/' . $product->image);
+        $exists_medium = Storage::disk('local')->exists('public/product_images/medium/' . $product->image);
+        $exists_small = Storage::disk('local')->exists('public/product_images/small/' . $product->image);
+
+        //delete image from folders
+        if($exists_large) {
+            Storage::delete('public/product_images/large/' . $product->image);
         }
+        if($exists_medium) {
+            Storage::delete('public/product_images/medium/' . $product->image);
+        }
+        if($exists_small) {
+            Storage::delete('public/product_images/small/' . $product->image);
+        }
+
+        // istrinti kiekviena product_images, kuriame product_id = $product->id
+        $product_images = ProductsImage::where('product_id', $product->id)->get();
+        foreach($product_images as $prodimg) {
+            $exists_large = Storage::disk('local')->exists('public/product_images/large/' . $prodimg->image);
+            $exists_medium = Storage::disk('local')->exists('public/product_images/medium/' . $prodimg->image);
+            $exists_small = Storage::disk('local')->exists('public/product_images/small/' . $prodimg->image);
+
+            //delete image from folders
+            if($exists_large) {
+                Storage::delete('public/product_images/large/' . $prodimg->image);
+            }
+            if($exists_medium) {
+                Storage::delete('public/product_images/medium/' . $prodimg->image);
+            }
+            if($exists_small) {
+                Storage::delete('public/product_images/small/' . $prodimg->image);
+            }
+            $prodimg->delete();
+        }
+
+        // dirbu end
+
 
         Product::destroy($id);
 

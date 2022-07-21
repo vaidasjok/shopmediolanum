@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use DB;
+use Illuminate\Validation\Rule;
 
 class FrontendImagesController extends Controller
 {
@@ -29,7 +30,7 @@ class FrontendImagesController extends Controller
                 $link = "";
             }
 
-        	Validator::make($request->all(), ['image' => 'required|image|mimes:png,jpg,jpeg|max:2000'])->validate(); 
+        	Validator::make($request->all(), ['title' => ['required', Rule::notIn(['.', '_'])], 'image' => 'required|image|mimes:png,jpg,jpeg|max:5000'])->validate(); 
 	        $ext = $request->file('image')->getClientOriginalExtension(); //jpg
 	        $stringImageFormat = str_replace(' ', '', $request->input('title'));
 	        $imageName = $stringImageFormat . '-' . time() . "." . $ext;
